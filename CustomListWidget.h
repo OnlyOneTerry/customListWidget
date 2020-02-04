@@ -20,6 +20,7 @@ public:
     explicit CustomListWidget(QWidget *parent = nullptr);
     ~CustomListWidget();
     void initUI();
+    void setListViewFont();
     void updateHeaderWid();
     void resizeEvent(QResizeEvent *event);
     void keyPressEvent(QKeyEvent *event);

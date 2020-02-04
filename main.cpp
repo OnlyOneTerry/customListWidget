@@ -9,13 +9,16 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     DWORD pid = GetCurrentProcessId(); // 当前进程ID
     QString inform = QString("%1").arg(pid);
-    QMessageBox::information(NULL,"","the client  PID is "+inform);
 
+    QMessageBox messageBox;
     HANDLE appLockMutex = CreateMutexA(NULL,FALSE,"CustomListWidget");
     if(ERROR_ALREADY_EXISTS == GetLastError())
     {
         CloseHandle(appLockMutex);
-        QMessageBox::information(NULL,"","the client is already open");
+        messageBox.setText("the client is already open");
+        messageBox.setWindowFlags(Qt::WindowStaysOnTopHint|Qt::WindowCloseButtonHint);
+        messageBox.exec();
+//        QMessageBox::information(NULL,"","the client is already open");
         return a.exec();
     }
     CustomListWidget w;

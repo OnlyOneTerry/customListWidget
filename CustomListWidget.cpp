@@ -136,6 +136,7 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
         _oldValue = value;
     });
     initUI();
+    setListViewFont();
 }
 
 CustomListWidget::~CustomListWidget()
@@ -149,7 +150,7 @@ void CustomListWidget::initUI()
     QString importTime =  current_date_time.toString("yyyy/MM/dd hh:mm:ss");
     QString finishtTime =  "--/--/--";
 
-    for(int i = 0;i<1000;i++)
+    for(int i = 0;i<100000;i++)
     {
         if(i%2==0)
         {
@@ -162,7 +163,7 @@ void CustomListWidget::initUI()
             _model->append(static_cast<quint32>(i),finishtTime,importTime,Data::AnnoStatus::ANNOTAINGING,"./","{}");
         }
     }
-    int dicomDirsNum = 1000;
+    int dicomDirsNum = 100000;
 
     if(dicomDirsNum%15==0)//每页包含15行序列信息
     {
@@ -189,6 +190,15 @@ void CustomListWidget::initUI()
         qDebug()<<"_oldValue is "<<_oldValue;
         qDebug()<<"_oldIndex is "<<_oldIndex;
     });
+}
+
+void CustomListWidget::setListViewFont()
+{
+    QFont font;
+    font.setWeight(15);
+    font.setPointSize(10);
+//    font.setPixelSize(14);//设置字体大小
+    ui->listView->setFont(font);
 }
 
 void CustomListWidget::updateHeaderWid()
