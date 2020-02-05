@@ -26,28 +26,25 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        CustomListWidget.cpp \
     CustomListModel.cpp \
     CustomListDelegate.cpp \
+    CustomListWidget.cpp \
     DataForm.cpp \
-    NavigateWidget.cpp \
-    LIstItemForm.cpp
+    NavigateWidget.cpp
 
 
 HEADERS += \
-        CustomListWidget.h \
     CustomListModel.h \
     CustomListDelegate.h \
+    CustomListWidget.h \
     DataForm.h \
     CommonDataDefine.h \
-    NavigateWidget.h \
-    LIstItemForm.h
+    NavigateWidget.h
 
 FORMS += \
         CustomListWidget.ui \
     DataForm.ui \
-    NavigateWidget.ui \
-    LIstItemForm.ui
+    NavigateWidget.ui
 
 
 # Default rules for deployment.

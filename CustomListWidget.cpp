@@ -196,8 +196,7 @@ void CustomListWidget::setListViewFont()
 {
     QFont font;
     font.setWeight(15);
-    font.setPointSize(10);
-//    font.setPixelSize(14);//设置字体大小
+    font.setPixelSize(14);//设置字体大小
     ui->listView->setFont(font);
 }
 
