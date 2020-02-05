@@ -147,10 +147,10 @@ CustomListWidget::~CustomListWidget()
 void CustomListWidget::initUI()
 {
     QDateTime current_date_time =  QDateTime::currentDateTime();
-    QString importTime =  current_date_time.toString("yyyy/MM/dd hh:mm:ss");
+    QString importTime =  current_date_time.toString("yyyy/MM/dd hh:mm");
     QString finishtTime =  "--/--/--";
 
-    for(int i = 0;i<100000;i++)
+    for(int i = 0;i<1000;i++)
     {
         if(i%2==0)
         {
@@ -163,7 +163,7 @@ void CustomListWidget::initUI()
             _model->append(static_cast<quint32>(i),finishtTime,importTime,Data::AnnoStatus::ANNOTAINGING,"./","{}");
         }
     }
-    int dicomDirsNum = 100000;
+    int dicomDirsNum = 1000;
 
     if(dicomDirsNum%15==0)//每页包含15行序列信息
     {

@@ -29,22 +29,22 @@ SOURCES += \
     CustomListModel.cpp \
     CustomListDelegate.cpp \
     CustomListWidget.cpp \
-    DataForm.cpp \
-    NavigateWidget.cpp
+    NavigateWidget.cpp \
+    AnnoMainWidget.cpp
 
 
 HEADERS += \
     CustomListModel.h \
     CustomListDelegate.h \
     CustomListWidget.h \
-    DataForm.h \
     CommonDataDefine.h \
-    NavigateWidget.h
+    NavigateWidget.h \
+    AnnoMainWidget.h
 
 FORMS += \
         CustomListWidget.ui \
-    DataForm.ui \
-    NavigateWidget.ui
+    NavigateWidget.ui \
+    AnnoMainWidget.ui
 
 
 # Default rules for deployment.

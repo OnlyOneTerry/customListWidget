@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <windows.h>
+#include "AnnoMainWidget.h"
 
 int main(int argc, char *argv[])
 {
@@ -20,8 +21,10 @@ int main(int argc, char *argv[])
       QMessageBox::information(NULL,"","the client is already open");
         return 0;
     }
-    CustomListWidget w;
-    w.show();
-    w.updateHeaderWid();
+//    CustomListWidget w;
+//    w.show();
+//    w.updateHeaderWid();
+    AnnoMainWidget mainWindow;
+    mainWindow.show();
     return a.exec();
 }
