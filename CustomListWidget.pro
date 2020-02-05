@@ -30,8 +30,7 @@ SOURCES += \
     CustomListModel.cpp \
     CustomListDelegate.cpp \
     DataForm.cpp \
-    NavigateWidget.cpp \
-    LIstItemForm.cpp
+    NavigateWidget.cpp
 
 
 HEADERS += \
@@ -40,14 +39,12 @@ HEADERS += \
     CustomListDelegate.h \
     DataForm.h \
     CommonDataDefine.h \
-    NavigateWidget.h \
-    LIstItemForm.h
+    NavigateWidget.h
 
 FORMS += \
         CustomListWidget.ui \
     DataForm.ui \
-    NavigateWidget.ui \
-    LIstItemForm.ui
+    NavigateWidget.ui
 
 
 # Default rules for deployment.
