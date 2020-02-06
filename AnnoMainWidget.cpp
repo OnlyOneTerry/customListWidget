@@ -230,5 +230,15 @@ void AnnoMainWidget::on_importFinishedBtn_clicked()
 
 void AnnoMainWidget::on_searchBtn_clicked()
 {
+    QString serisId = ui->lineEdit->text();
+    qDebug()<<"search id is --"<<serisId;
+    int idex = _listWidgt->serchSpecifySeris(serisId);
+    if(idex>=0)
+    {
+        //跳转到指定的序列
+        _listWidgt->moveToSpecifySeris(idex);
+    }else{
+        qDebug()<<"not found....";
+    }
 
 }

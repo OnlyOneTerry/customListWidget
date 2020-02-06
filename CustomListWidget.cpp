@@ -229,3 +229,13 @@ void CustomListWidget::keyPressEvent(QKeyEvent *event)
          QMessageBox::information(this,"title",QString("id is %1").arg(_currentId));
     }
 }
+
+int CustomListWidget::serchSpecifySeris(QString sersiId)
+{
+    return _model->getIndexById(sersiId);
+}
+
+void CustomListWidget::moveToSpecifySeris(int idex)
+{
+    ui->listView->verticalScrollBar()->setValue(idex);
+}

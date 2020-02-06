@@ -24,6 +24,9 @@ public:
     void updateHeaderWid();
     void resizeEvent(QResizeEvent *event);
     void keyPressEvent(QKeyEvent *event);
+    //search specify serisId
+    int serchSpecifySeris(QString sersiId);
+    void moveToSpecifySeris(int idex);
 private:
     Ui::CustomListWidget *ui;
     CustomListDelegate* _delegate;

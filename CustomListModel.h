@@ -37,6 +37,7 @@ public:
          QString result);
     bool checkFileExist(int index);
     Data* findAt(int index);
+    int getIndexById(QString serisID);
 signals:
     void dataChanged();
 public slots:

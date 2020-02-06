@@ -93,6 +93,15 @@ QWidget#rightListWidget
       </item>
       <item>
        <widget class="QLineEdit" name="lineEdit">
+        <property name="maximumSize">
+         <size>
+          <width>200</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
         <property name="text">
          <string>输入序列号搜索相关文件</string>
         </property>

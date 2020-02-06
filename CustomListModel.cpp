@@ -171,6 +171,19 @@ Data *CustomListModel::findAt(int index)
     return m_data[index];
 }
 
+int CustomListModel::getIndexById(QString serisID)
+{
+    for(int i = 0;i<m_data.size();i++)
+    {
+        if(m_data[i]->_serisId == serisID.toInt())
+        {
+            qDebug()<<"serisId is ---"<<m_data[i]->_serisId;
+            return i;
+        }
+    }
+    return -1;
+}
+
 
 
 
