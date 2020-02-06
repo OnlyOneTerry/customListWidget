@@ -13,7 +13,7 @@ public:
         INVALID
     };
 
-    Data(const quint32 &id, const QString &finishTime,const QString &importTime, Data::AnnoStatus status, QString address, QString result):
+    Data(const QString &id, const QString &finishTime,const QString &importTime, Data::AnnoStatus status, QString address, QString result):
         _serisId(id),
         _finishTime(finishTime),
         _importTime(importTime),
@@ -35,7 +35,7 @@ public:
 
 
 public:
-    quint32 _serisId;//序列号
+    QString _serisId;//序列号
     QString _finishTime;//标注完时间
     QString _importTime;//导入时间
     AnnoStatus _annotStatus;//状态

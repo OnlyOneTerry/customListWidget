@@ -37,7 +37,7 @@ private:
     bool _isClickBtnToChange = false;
     int _amountPage = 0;//总页数
     int _amountNum = 1000;//总行数
-    int _currentId = 0;
+    QString _currentId = 0;
 };
 
 #endif // CUSTOMLISTWIDGET_H

@@ -30,7 +30,7 @@ public:
     //Remove data;
     void remove(int index);
     bool deleteIndexFile(QString path);
-   void append(const quint32 &id, const QString &finishTime,
+   void append(const QString &id, const QString &finishTime,
                const QString &importTime,
          Data::AnnoStatus state,
          QString address,
@@ -41,13 +41,13 @@ public:
 signals:
     void dataChanged();
 public slots:
-    void resetModel(const quint32 &id, const QString &finishTime,const QString& importTime, Data::AnnoStatus status, QString address, QString result);
+    void resetModel(const QString &id, const QString &finishTime,const QString& importTime, Data::AnnoStatus status, QString address, QString result);
 protected:
     QHash<int, QByteArray> roleNames() const;
 private:
     int m_RobotCount;
     QList<Data*> m_data;//用QList<Data>做数据源
-    QList<quint32> m_serisIdlist;//用于检测是否有重复的ip
+    QList<QString> m_serisIdlist;//用于检测是否有重复的id
     int m_currentIndex = 0;
     QString m_currentId ="";
 };

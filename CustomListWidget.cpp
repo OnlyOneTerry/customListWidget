@@ -154,13 +154,13 @@ void CustomListWidget::initUI()
     {
         if(i%2==0)
         {
-            _model->append(static_cast<quint32>(i),finishtTime,importTime,Data::AnnoStatus::UNANNOTATION,"./","{}");
+            _model->append(QString("%1").arg(i),finishtTime,importTime,Data::AnnoStatus::UNANNOTATION,"./","{}");
 
         }else if(i%3==0){
-            _model->append(static_cast<quint32>(i),finishtTime,importTime,Data::AnnoStatus::ANNOFINISHED,"./","{}");
+            _model->append(QString("%1").arg(i),finishtTime,importTime,Data::AnnoStatus::ANNOFINISHED,"./","{}");
         }else {
 
-            _model->append(static_cast<quint32>(i),finishtTime,importTime,Data::AnnoStatus::ANNOTAINGING,"./","{}");
+            _model->append(QString("%1").arg(i),finishtTime,importTime,Data::AnnoStatus::ANNOTAINGING,"./","{}");
         }
     }
     int dicomDirsNum = 1000;

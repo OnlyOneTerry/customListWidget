@@ -71,7 +71,7 @@ QHash<int, QByteArray> CustomListModel::roleNames() const
 }
 
 
-void CustomListModel::resetModel(const quint32 &id, const QString &finishTime, const QString &importTime, Data::AnnoStatus status, QString address, QString result)
+void CustomListModel::resetModel(const QString &id, const QString &finishTime, const QString &importTime, Data::AnnoStatus status, QString address, QString result)
 {
     beginResetModel();
     for(int i = 0;i<m_data.size();i++){
@@ -141,7 +141,7 @@ bool CustomListModel::deleteIndexFile(QString path)
     return dir.rmpath(dir.absolutePath());
 }
 
-void CustomListModel::append(const quint32 &id, const QString &finishTime, const QString &importTime, Data::AnnoStatus state, QString address, QString result)
+void CustomListModel::append(const QString &id, const QString &finishTime, const QString &importTime, Data::AnnoStatus state, QString address, QString result)
 {
 
     insert(m_data.count(),new Data(id,finishTime,importTime,state,address,result));
@@ -151,7 +151,7 @@ void CustomListModel::append(const quint32 &id, const QString &finishTime, const
 
 bool CustomListModel::checkFileExist(int index)
 {
-    quint32 id = m_data.at(index)->_serisId;
+    QString id = m_data.at(index)->_serisId;
     QString address = m_data.at(index)->_address;
     QFileInfo fi(address);
 
@@ -175,7 +175,7 @@ int CustomListModel::getIndexById(QString serisID)
 {
     for(int i = 0;i<m_data.size();i++)
     {
-        if(m_data[i]->_serisId == serisID.toInt())
+        if(m_data[i]->_serisId == serisID)
         {
             qDebug()<<"serisId is ---"<<m_data[i]->_serisId;
             return i;
