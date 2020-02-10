@@ -160,7 +160,7 @@ color: #5E5F5F;</string>
       <widget class="QWidget" name="leftFilterWidget" native="true">
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>200</width>
          <height>0</height>
         </size>
        </property>
@@ -170,7 +170,44 @@ color: #5E5F5F;</string>
          <height>16777215</height>
         </size>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,5,1">
+       <property name="styleSheet">
+        <string notr="true">QPushButton#uploadBtn{
+	font: 11pt &quot;黑体&quot;;
+  min-width:120px;
+  max-width:120px;
+  min-height:40px;
+  max-height:40px;
+  margin-left:40px;
+  border:0px solid ;
+  border-radius:5px;
+  background-color:#448E97;
+  color:#ffffff;
+}
+
+QPushButton#importFinishedBtn{
+  font: 10pt &quot;黑体&quot;;
+  min-width:120px;
+  max-width:120px;
+  min-height:40px;
+  max-height:40px;
+  margin-left:40px;
+  border:0px solid ;
+  border-radius:5px;
+  background-color:#043B4E;
+  color:#ffffff;
+}
+
+QWidget#filterBtnWidget
+{
+  background-color:#000000;
+}
+
+
+
+
+</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,4,1">
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -226,31 +263,73 @@ color: #5E5F5F;</string>
            <number>5</number>
           </property>
           <item>
-           <widget class="QPushButton" name="selectAllBtn">
-            <property name="text">
-             <string>全部文件</string>
+           <widget class="QWidget" name="filterBtnWidget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>160</height>
+             </size>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="finishedBtn">
-            <property name="text">
-             <string>已完成标注文件</string>
+            <property name="styleSheet">
+             <string notr="true">QPushButton:hover{
+  background-color:#043B4E;
+  font: 11pt &quot;黑体&quot;;
+  color:#ffffff;
+}
+
+QPushButton{
+  min-height:40px;
+  max-height:40px;
+  font: 10pt &quot;黑体&quot;;
+  background-color:#061D2C;
+  color:#666666;
+}</string>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="annoingBtn">
-            <property name="text">
-             <string>标注中文件</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="unAnnoBtn">
-            <property name="text">
-             <string>未标注文件</string>
-            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="selectAllBtn">
+               <property name="text">
+                <string>全部文件</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="finishedBtn">
+               <property name="text">
+                <string>已完成标注文件</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="annoingBtn">
+               <property name="text">
+                <string>标注中文件</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="unAnnoBtn">
+               <property name="text">
+                <string>未标注文件</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
