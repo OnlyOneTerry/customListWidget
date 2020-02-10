@@ -38,11 +38,7 @@ CustomListDelegate::CustomListDelegate(CustomListModel *model, QObject *parent):
 
 CustomListDelegate::~CustomListDelegate()
 {
-    if(_form)
-    {
-        _form->deleteLater();
-        _form = nullptr;
-    }
+
 }
 
 void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

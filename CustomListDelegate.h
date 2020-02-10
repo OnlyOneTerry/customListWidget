@@ -4,10 +4,7 @@
 #include <QPushButton>
 #include <QListView>
 #include <QLabel>
-#include "DataForm.h"
 #include "CustomListModel.h"
-#include "StudentForm.h"
-
 
 class CustomListDelegate: public QStyledItemDelegate
 {
@@ -49,7 +46,6 @@ private:
     Type _type;
 
     CustomListModel *_model=nullptr;
-    DataForm* _form;
 };
 
 
