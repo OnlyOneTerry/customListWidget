@@ -239,3 +239,8 @@ void CustomListWidget::moveToSpecifySeris(int idex)
 {
     ui->listView->verticalScrollBar()->setValue(idex);
 }
+
+void CustomListWidget::setSelectedItemAt(int idex)
+{
+
+}

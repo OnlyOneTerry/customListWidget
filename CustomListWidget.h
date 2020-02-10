@@ -27,6 +27,7 @@ public:
     //search specify serisId
     int serchSpecifySeris(QString sersiId);
     void moveToSpecifySeris(int idex);
+    void setSelectedItemAt(int idex);//设置当前inde项选中
 private:
     Ui::CustomListWidget *ui;
     CustomListDelegate* _delegate;

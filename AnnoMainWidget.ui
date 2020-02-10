@@ -61,6 +61,24 @@ QWidget#rightListWidget
        <height>100</height>
       </size>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#searchBtn{
+   background-color:#043B4E;
+   color:#ffffff;
+   min-height:40px;
+   max-height:40px;
+   min-width:90px;
+   max-width:90px;
+   border-radius:0px;
+}
+
+QLineEdit#lineEidt{
+  min-height:40px;
+  max-height:40px;
+   min-width:100px;
+   max-width:200px;
+}</string>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
        <number>0</number>
@@ -92,23 +110,39 @@ QWidget#rightListWidget
        </spacer>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="CustomLineEdit" name="lineEdit">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>200</width>
-          <height>16777215</height>
+          <height>40</height>
          </size>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::StrongFocus</enum>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #172125;
+color: #5E5F5F;</string>
         </property>
         <property name="text">
          <string>输入序列号搜索相关文件</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="searchBtn">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
         <property name="text">
          <string>搜索</string>
         </property>
@@ -296,6 +330,13 @@ QWidget#rightListWidget
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>CustomLineEdit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

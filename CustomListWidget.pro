@@ -30,7 +30,8 @@ SOURCES += \
     CustomListDelegate.cpp \
     CustomListWidget.cpp \
     NavigateWidget.cpp \
-    AnnoMainWidget.cpp
+    AnnoMainWidget.cpp \
+    CustomLineEdit.cpp
 
 
 HEADERS += \
@@ -39,7 +40,8 @@ HEADERS += \
     CustomListWidget.h \
     CommonDataDefine.h \
     NavigateWidget.h \
-    AnnoMainWidget.h
+    AnnoMainWidget.h \
+    CustomLineEdit.h
 
 FORMS += \
         CustomListWidget.ui \
