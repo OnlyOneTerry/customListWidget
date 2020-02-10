@@ -22,6 +22,49 @@
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#CustomListWidget
+{
+  background-color:#000000;
+}
+
+QWidget#headerWidget
+{
+  background-color:#0C1114;
+  border-left: 0px solid #000000;
+  border-right: 0px solid #000000;
+  border-top: 0px solid white;
+  border-bottom: 0px solid #000000;
+}
+
+QLabel{
+ color:#FFFFFF
+}
+
+QListView{
+  border-left: 0px solid #000000;
+  border-right: 0px solid #000000;
+  border-top: 0px solid #172025;
+  border-bottom: 0px solid #000000;
+  background-color:#172025;
+}
+
+
+QScrollBar:vertical{
+  background-color:black;
+  width:8px;
+}
+QScrollBar::handle:vertical{
+   background: white;
+   min-height: 60px;
+}
+
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+     border: 0px solid grey;
+     width: 0px;
+     height: 0px;
+ }</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
     <number>0</number>
@@ -161,19 +204,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>356</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <widget class="QWidget" name="navWidget" native="true">
