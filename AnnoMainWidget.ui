@@ -275,19 +275,28 @@ QWidget#filterBtnWidget
   background-color:#043B4E;
   font: 11pt &quot;黑体&quot;;
   color:#ffffff;
+  padding:0px;;
+    border:none;
 }
 
 QPushButton{
+  border:none;
   min-height:40px;
   max-height:40px;
   font: 10pt &quot;黑体&quot;;
   background-color:#061D2C;
-  color:#666666;
-}</string>
+  color:#666666; 
+}
+
+/*QPushButton:press{
+  padding-left:0px;  
+  padding-top:0px; 
+    border:none; 
+}*/</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <property name="spacing">
-              <number>0</number>
+              <number>2</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
@@ -378,7 +387,7 @@ QPushButton{
       <widget class="QWidget" name="rightListWidget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <property name="leftMargin">
-         <number>0</number>
+         <number>3</number>
         </property>
         <property name="topMargin">
          <number>0</number>
