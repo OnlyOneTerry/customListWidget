@@ -33,7 +33,7 @@ void AnnoMainWidget::initDatabase()
     }
 
     //创建表格
-    if(!sql_query.exec("create table annotationTab(serisId text primary key,address text,annoStatus int, finishTime text,result text)"))
+    if(!sql_query.exec("create table annotationTab(serisId text primary key,address text,annoStatus int, finishTime text,importTime text,result text)"))
     {
         qDebug()<<"Error:Failed to create table."<<sql_query.lastError();
     }
@@ -77,7 +77,7 @@ bool AnnoMainWidget::checkDirIsValid(QString dirPath)
     foreach (auto mfi, dir.entryInfoList()) {//若文件夹中包含.dicom文件则此文件夹为有效文件夹
         if(mfi.isFile()&&mfi.fileName().contains(".dicom"))
         {
-            //            qDebug()<<"file :"<<mfi.fileName();
+            //qDebug()<<"file :"<<mfi.fileName();
             return true;
         }
     }
@@ -95,19 +95,19 @@ void AnnoMainWidget::getValidDir()
     };
 #if 1
     QDateTime current_date_time =  QDateTime::currentDateTime();
-    QString currentTime =  current_date_time.toString("yyyy/MM/dd hh:mm:ss");
+    QString importTime =  current_date_time.toString("yyyy/MM/dd hh:mm");
 
     //获取有效文件夹地址相关信息：完成时间，序列号，标注状态
     for(auto iter = _dirPathAndDirNameMap.begin();iter!=_dirPathAndDirNameMap.end();iter++)
     {
         static int count = 0;
         count++;
-        insertToTable(iter.value(),iter.key(),count%3,currentTime,"");
+        insertToTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,"");
     }
 #endif
 }
 
-void AnnoMainWidget::insertToTable(QString id, QString address, int statusType, QString finishTime, QString result)
+void AnnoMainWidget::insertToTable(QString id, QString address, int statusType, QString finishTime, QString importTime, QString result)
 {
     if(!database.open())
     {
@@ -116,11 +116,12 @@ void AnnoMainWidget::insertToTable(QString id, QString address, int statusType, 
     else{
         qDebug()<<"successed to connect database.";
     }
-    sql_query.prepare("insert into annotationTab(serisId,address,annoStatus,finishTime,result)VALUES(:id,:dirpath,:status,:time,:result)");
+    sql_query.prepare("insert into annotationTab(serisId,address,annoStatus,finishTime,importTime,result)VALUES(:id,:dirpath,:status,:time,:impTime,:result)");
     sql_query.bindValue(":id",id);
     sql_query.bindValue(":dirpath",address);
     sql_query.bindValue(":status",statusType);
     sql_query.bindValue(":time",finishTime);
+    sql_query.bindValue(":impTime",importTime);
     sql_query.bindValue(":result",result);
     bool res = sql_query.exec();
     qDebug()<<"operation result is--------------- "<<res;
@@ -135,6 +136,8 @@ void AnnoMainWidget::selectByStatusType(int statusType)
     else{
         qDebug()<<"successed to connect database.";
     }
+    _dataList.clear();
+
     //动态查询
     sql_query.prepare("select * from annotationTab where annoStatus =:type");
     sql_query.bindValue(":type",statusType);
@@ -145,14 +148,26 @@ void AnnoMainWidget::selectByStatusType(int statusType)
     }else{
         while(sql_query.next())
         {
+            Data data;
+            data._serisId = sql_query.value(0).toString();
+            data._address = sql_query.value(1).toString();
+            data._annotStatus = (Data::AnnoStatus)sql_query.value(2).toInt();
+            data._finishTime = sql_query.value(3).toString();
+            data._importTime = sql_query.value(4).toString();
+            data._annResult = sql_query.value(5).toString();
+            _dataList.append(data);
+#if 0
             QString id = sql_query.value(0).toString();
             QString address = sql_query.value(1).toString();
             int statusType = sql_query.value(2).toInt();
             QString finishTime = sql_query.value(3).toString();
-            QString annoResult = sql_query.value(4).toString();
-            qDebug()<<QString("id:%1    address:%2    statusType:%3 finishTime:%4 annoResult:%5").arg(id).arg(address).arg(statusType).arg(finishTime).arg(annoResult);
+            QString importTime = sql_query.value(4).toString();
+            QString annoResult = sql_query.value(5).toString();
+            qDebug()<<QString("id:%1    address:%2    statusType:%3 finishTime:%4 importTime:%5 annoResult:%6").arg(id).arg(address).arg(statusType).arg(finishTime).arg(importTime).arg(annoResult);
+#endif
         }
     }
+    _listWidgt->appendData(_dataList);
 }
 
 void AnnoMainWidget::delById(QString id)
@@ -170,6 +185,7 @@ void AnnoMainWidget::selectAll()
     else{
         qDebug()<<"successed to connect database.";
     }
+    _dataList.clear();
     sql_query.exec("select * from annotationTab");
     if(!sql_query.exec())
     {
@@ -179,14 +195,27 @@ void AnnoMainWidget::selectAll()
     {
         while(sql_query.next())
         {
+            Data data;
+            data._serisId = sql_query.value(0).toString();
+            data._address = sql_query.value(1).toString();
+            data._annotStatus = (Data::AnnoStatus)sql_query.value(2).toInt();
+            data._finishTime = sql_query.value(3).toString();
+            data._importTime = sql_query.value(4).toString();
+            data._annResult = sql_query.value(5).toString();
+            qDebug()<<"selectall finishTime is -----"<<data._finishTime<<"importTiem is ---------"<<data._importTime;
+            _dataList.append(data);
+#if 1
             QString id = sql_query.value(0).toString();
             QString address = sql_query.value(1).toString();
             int statusType = sql_query.value(2).toInt();
             QString finishTime = sql_query.value(3).toString();
-            QString annoResult = sql_query.value(4).toString();
-            qDebug()<<QString("id:%1    address:%2    statusType:%3 finishTime:%4 annoResult:%5").arg(id).arg(address).arg(statusType).arg(finishTime).arg(annoResult);
+            QString importTime = sql_query.value(4).toString();
+            QString annoResult = sql_query.value(5).toString();
+            qDebug()<<QString("id:%1    address:%2    statusType:%3 finishTime:%4 importTime:%5 annoResult:%6").arg(id).arg(address).arg(statusType).arg(finishTime).arg(importTime).arg(annoResult);
+#endif
         }
     }
+    _listWidgt->appendData(_dataList);
 }
 
 void AnnoMainWidget::on_uploadBtn_clicked()
@@ -196,7 +225,6 @@ void AnnoMainWidget::on_uploadBtn_clicked()
     {
         chaKan(dirpath);
     }
-
     getValidDir();
 }
 

@@ -12,7 +12,15 @@ public:
         UNANNOTATION,
         INVALID
     };
+    Data():_serisId("0"),
+        _finishTime("--/--/--"),
+        _importTime("--/--/--"),
+        _annotStatus(UNANNOTATION),
+        _address("./"),
+        _annResult("{}")
+    {
 
+    }
     Data(const QString &id, const QString &finishTime,const QString &importTime, Data::AnnoStatus status, QString address, QString result):
         _serisId(id),
         _finishTime(finishTime),
@@ -27,7 +35,8 @@ public:
     Data(const Data &data)
     {
         this->_serisId = data._serisId;
-        this->_serisId = data._serisId;
+        this->_finishTime = data._finishTime;
+        this->_importTime = data._importTime;
         this->_annotStatus = data._annotStatus;
         this->_address = data._address;
         this->_annResult = data._annResult;

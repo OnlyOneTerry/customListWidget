@@ -31,10 +31,8 @@ public:
     void remove(int index);
     bool deleteIndexFile(QString path);
    void append(const QString &id, const QString &finishTime,
-               const QString &importTime,
-         Data::AnnoStatus state,
-         QString address,
-         QString result);
+               const QString &importTime,Data::AnnoStatus state,
+               QString address,QString result);
     bool checkFileExist(int index);
     Data* findAt(int index);
     int getIndexById(QString serisID);

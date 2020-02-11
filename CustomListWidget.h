@@ -7,6 +7,7 @@
 #include "NavigateWidget.h"
 #include <QResizeEvent>
 #include <QKeyEvent>
+#include <QSpacerItem>
 
 namespace Ui {
 class CustomListWidget;
@@ -20,6 +21,7 @@ public:
     explicit CustomListWidget(QWidget *parent = nullptr);
     ~CustomListWidget();
     void initUI();
+    void appendData(QList<Data>& datalist);
     void setListViewFont();
     void updateHeaderWid();
     void resizeEvent(QResizeEvent *event);

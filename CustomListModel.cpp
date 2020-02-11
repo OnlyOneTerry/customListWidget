@@ -56,6 +56,7 @@ int CustomListModel::rowCount(const QModelIndex &parent) const
 void CustomListModel::clear()
 {
     m_data.clear();
+    m_serisIdlist.clear();
 }
 
 QHash<int, QByteArray> CustomListModel::roleNames() const
@@ -88,11 +89,9 @@ void CustomListModel::insert(int index , Data *data)
     if(index < 0 || index > m_data.count()){
         return;
     }
-//    emit  beginInsertRows(QModelIndex(),index,index);
     if(m_serisIdlist.contains(data->_serisId))return;
     m_serisIdlist.append(data->_serisId);
     m_data.insert(index,data);
-//    emit endInsertRows();
 }
 
 void CustomListModel::remove(int index)
@@ -145,7 +144,7 @@ void CustomListModel::append(const QString &id, const QString &finishTime, const
 {
 
     insert(m_data.count(),new Data(id,finishTime,importTime,state,address,result));
-
+    qDebug()<<"insert data finishtime is -------"<<finishTime<<"importTime is --------"<<importTime;
 }
 
 

@@ -23,7 +23,7 @@ public:
     void chaKan(QString path);
     bool checkDirIsValid(QString dirPath);
     void getValidDir();
-    void insertToTable(QString id, QString address, int statusType, QString finishTime, QString result);
+    void insertToTable(QString id, QString address, int statusType, QString finishTime,QString importTime, QString result);
     void selectByStatusType(int statusType);
     void delById(QString id);
     void selectAll();
@@ -50,6 +50,7 @@ private:
     QSqlQuery sql_query;
     QStringList _dirlist;//记录文件夹地址
     QMap<QString,QString> _dirPathAndDirNameMap;//文件夹路径和文件夹名称(序列编号)关联容器
+    QList<Data> _dataList;//缓存数据
 };
 
 #endif // ANNOMAINWIDGET_H

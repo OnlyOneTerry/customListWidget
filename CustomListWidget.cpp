@@ -174,9 +174,7 @@ void CustomListWidget::initUI()
     }
 
     _navBtns = new NavigateWidget(_amountPage);
-    QSpacerItem* horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    ui->navLayout->addWidget(_navBtns);
-    ui->navLayout->addSpacerItem(horizontalSpacer);
+    ui->containerLayout->addWidget(_navBtns);
     connect(_navBtns,&NavigateWidget::signalClickeIndex,this,[&](int index){
         _isClickBtnToChange = true;
         ui->listView->verticalScrollBar()->setValue(15*(index-1));
@@ -187,10 +185,59 @@ void CustomListWidget::initUI()
             _oldValue = 15*(index-1);
         }
         _oldIndex = index;
-        qDebug()<<"_oldValue is "<<_oldValue;
-        qDebug()<<"_oldIndex is "<<_oldIndex;
+        //        qDebug()<<"_oldValue is "<<_oldValue;
+        //        qDebug()<<"_oldIndex is "<<_oldIndex;
     });
 }
+
+
+void CustomListWidget::appendData(QList<Data> &datalist)
+{
+    _model->clear();
+    ui->listView->update();
+    if(_navBtns){
+        delete _navBtns;
+        _navBtns = nullptr;
+    }
+
+    for(int i = 0;i<datalist.size();i++)
+    {
+        if(i%2==0)
+        {
+            _model->append(QString("%1").arg(datalist.at(i)._serisId),datalist.at(i)._finishTime,datalist.at(i)._importTime,datalist.at(i)._annotStatus,datalist.at(i)._address,datalist.at(i)._annResult);
+
+        }else if(i%3==0){
+            _model->append(QString("%1").arg(datalist.at(i)._serisId),datalist.at(i)._finishTime,datalist.at(i)._importTime,datalist.at(i)._annotStatus,datalist.at(i)._address,datalist.at(i)._annResult);
+        }else {
+
+            _model->append(QString("%1").arg(datalist.at(i)._serisId),datalist.at(i)._finishTime,datalist.at(i)._importTime,datalist.at(i)._annotStatus,datalist.at(i)._address,datalist.at(i)._annResult);
+        }
+    }
+    int dicomDirsNum = datalist.size();
+
+    if(dicomDirsNum%15==0)//每页包含15行序列信息
+    {
+        _amountPage = dicomDirsNum/15;
+    }
+    else{
+        _amountPage = dicomDirsNum/15+1;
+    }
+
+    _navBtns = new NavigateWidget(_amountPage);
+    ui->containerLayout->addWidget(_navBtns);
+    connect(_navBtns,&NavigateWidget::signalClickeIndex,this,[&](int index){
+        _isClickBtnToChange = true;
+        ui->listView->verticalScrollBar()->setValue(15*(index-1));
+        _isClickBtnToChange = false;
+        if(index == _amountPage){
+            _oldValue = ui->listView->verticalScrollBar()->value();//获取最后一页的起始编号
+        }else{
+            _oldValue = 15*(index-1);
+        }
+        _oldIndex = index;
+    });
+}
+
 
 void CustomListWidget::setListViewFont()
 {
@@ -226,7 +273,7 @@ void CustomListWidget::keyPressEvent(QKeyEvent *event)
 {
     if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_C)
     {
-         QMessageBox::information(this,"title",QString("id is %1").arg(_currentId));
+        QMessageBox::information(this,"title",QString("id is %1").arg(_currentId));
     }
 }
 
