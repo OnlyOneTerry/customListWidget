@@ -195,6 +195,7 @@ void CustomListWidget::appendData(QList<Data> &datalist)
 {
     _model->clear();
     ui->listView->update();
+    ui->listView->reset();
     if(_navBtns){
         delete _navBtns;
         _navBtns = nullptr;
