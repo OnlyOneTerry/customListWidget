@@ -225,7 +225,10 @@ void AnnoMainWidget::on_uploadBtn_clicked()
     {
         chaKan(dirpath);
     }
+    //将获取的有效序列文件夹导入数据库
     getValidDir();
+    //将有效的序列数据送入listveiw显示
+    selectAll();
 }
 
 

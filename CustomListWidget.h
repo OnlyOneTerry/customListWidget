@@ -44,7 +44,7 @@ private:
     int _oldValue = 0;//用于判断当前是value是增大还是减小（滚动条是向上滑动还是向下）
     bool _isClickBtnToChange = false;
     int _amountPage = 0;//总页数
-    int _amountNum = 1000;//总行数
+    int _amountNum = 104;//总行数
     QString _currentId = 0;
 };
 

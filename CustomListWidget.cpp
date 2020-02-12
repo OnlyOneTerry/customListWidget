@@ -57,85 +57,112 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
         qDebug()<<"verticalScrollBar value is ...."<<value;
         //判断是向上滑动还是向下滑动
         if(value-_oldValue>0){//向下滑动
+            if(_amountPage<=7){
 
-            //由于最后一页可能不足15个，且listview最后一页显示的第一行并不是紧接着上一页的最后一行，而是包含了上一页的好几行
-            //所以要特殊处理
-            if(value+15>=_amountNum)//总数据行数
-            {
-                _navBtns->setCurrentPos(7,true);
-                _oldIndex = _amountPage;
-            }else{
-
-                int idex = 0;
-                idex = value/15+1;//计算当前属于第几页
-                if(idex == _oldIndex) return;
-                //大于3的时idex = 4,
-                qDebug()<<"index is -------"<<idex;
-                if(idex <=3)
+                if(value+15>=_amountNum)//总数据行数
                 {
+                    _navBtns->setCurrentPos(_amountPage,true);
+                    _oldIndex = _amountPage;
+                }else{
+                    int idex = 0;
+                    idex = value/15+1;//计算当前属于第几页
+                    if(idex == _oldIndex) return;
+                    qDebug()<<"index is -------"<<idex;
                     _navBtns->setCurrentPos(idex,true);
+                    _oldIndex = idex;
                 }
-                if(idex >3){
-                    //如果idex >= 总页数-3
-                    if(idex <=_amountPage-3){
-                        _navBtns->setCurrentPos(4,true);
-                    }else{
-                        if(idex == _amountPage -2)
-                        {
-                            _navBtns->setCurrentPos(5,true);
-                        }
-                        if(idex == _amountPage-1)
-                        {
-                            _navBtns->setCurrentPos(6,true);
-                        }
-                        else if(idex == _amountPage)
-                        {
-                            _navBtns->setCurrentPos(7,true);
-                        }
-
+            }else{
+                //由于最后一页可能不足15个，且listview最后一页显示的第一行并不是紧接着上一页的最后一行，而是包含了上一页的好几行
+                //所以要特殊处理
+                if(value+15>=_amountNum)//总数据行数
+                {
+                    _navBtns->setCurrentPos(7,true);
+                    _oldIndex = _amountPage;
+                }else{
+                    int idex = 0;
+                    idex = value/15+1;//计算当前属于第几页
+                    if(idex == _oldIndex) return;
+                    //大于3的时idex = 4,
+                    qDebug()<<"index is -------"<<idex;
+                    if(idex <=3)
+                    {
+                        _navBtns->setCurrentPos(idex,true);
                     }
+                    if(idex >3){
+                        //如果idex >= 总页数-3
+                        if(idex <=_amountPage-3){
+                            _navBtns->setCurrentPos(4,true);
+                        }else{
+                            if(idex == _amountPage -2)
+                            {
+                                _navBtns->setCurrentPos(5,true);
+                            }
+                            if(idex == _amountPage-1)
+                            {
+                                _navBtns->setCurrentPos(6,true);
+                            }
+                            else if(idex == _amountPage)
+                            {
+                                _navBtns->setCurrentPos(7,true);
+                            }
+
+                        }
+                    }
+                    _oldIndex = idex;
                 }
-                _oldIndex = idex;
             }
 
         }else if(value -_oldValue<0){//向上滑动
 #if 1
-            int idex = 0;
-            if(value==14) {
-                idex = 1;
-            }else{
-                idex = value/15+1;
-            }
-            if(idex == _oldIndex) return;
-            //大于3的时idex = 2 ,
-            if(idex <=2)
+            if(_amountPage<=7)//如果总页数小于或等于7
             {
+                int idex = 0;
+                if(value==14) {
+                    idex = 1;
+                }else{
+                    idex = value/15+1;
+                }
+                if(idex == _oldIndex) return;
                 _navBtns->setCurrentPos(idex,true);
+                _oldIndex = idex;
+            }else{
+                int idex = 0;
+                if(value==14) {
+                    idex = 1;
+                }else{
+                    idex = value/15+1;
+                }
+                if(idex == _oldIndex) return;
+                //大于3的时idex = 2 ,
+                if(idex <=2)
+                {
+                    _navBtns->setCurrentPos(idex,true);
+                }
+                qDebug()<<"idex is ------------"<<idex;
+                if(idex >2){
+                    //如果当前在最后页
+                    if(idex == _amountPage-1)
+                    {
+                        _navBtns->setCurrentPos(6,true);
+                    }
+                    else if(idex == _amountPage-2)
+                    {
+                        _navBtns->setCurrentPos(5,true);
+                    }
+                    else if(idex == _amountPage-3)
+                    {
+                        _navBtns->setCurrentPos(4,true);
+                    }
+                    else if(idex == _amountPage-4)
+                    {
+                        _navBtns->setCurrentPos(3,true);
+                    }else
+                    {
+                        _navBtns->setCurrentPos(2,true);
+                    }
+                }
+                _oldIndex = idex;
             }
-            qDebug()<<"idex is ------------"<<idex;
-            if(idex >2){
-                //如果当前在最后页
-                if(idex == _amountPage-1)
-                {
-                    _navBtns->setCurrentPos(6,true);
-                }
-                else if(idex == _amountPage-2)
-                {
-                    _navBtns->setCurrentPos(5,true);
-                }
-                else if(idex == _amountPage-3)
-                {
-                    _navBtns->setCurrentPos(4,true);
-                }
-                else if(idex == _amountPage-4)
-                {
-                    _navBtns->setCurrentPos(3,true);
-                }else
-                {
-                    _navBtns->setCurrentPos(2,true);
-                }
-            }
-            _oldIndex = idex;
 #endif
         }
 
@@ -156,7 +183,7 @@ void CustomListWidget::initUI()
     QString importTime =  current_date_time.toString("yyyy/MM/dd hh:mm");
     QString finishtTime =  "--/--/--";
 
-    for(int i = 0;i<1000;i++)
+    for(int i = 0;i<104;i++)
     {
         if(i%2==0)
         {
@@ -169,7 +196,7 @@ void CustomListWidget::initUI()
             _model->append(QString("%1").arg(i),finishtTime,importTime,Data::AnnoStatus::ANNOTAINGING,"./","{}");
         }
     }
-    int dicomDirsNum = 1000;
+    int dicomDirsNum = 104;
 
     if(dicomDirsNum%15==0)//每页包含15行序列信息
     {
@@ -206,6 +233,8 @@ void CustomListWidget::appendData(QList<Data> &datalist)
         delete _navBtns;
         _navBtns = nullptr;
     }
+    //获取总数量
+    _amountNum = datalist.size();
 
     for(int i = 0;i<datalist.size();i++)
     {
@@ -242,7 +271,19 @@ void CustomListWidget::appendData(QList<Data> &datalist)
             _oldValue = 15*(index-1);
         }
         _oldIndex = index;
+        qDebug()<<"_oldValue is "<<_oldValue;
+        qDebug()<<"_oldIndex is "<<_oldIndex;
     });
+
+    int scrossBarValue = ui->listView->verticalScrollBar()->value();
+    _oldValue = scrossBarValue;
+    if(scrossBarValue%15==0)//每页包含15行序列信息
+    {
+        _oldIndex = scrossBarValue/15;
+    }
+    else{
+        _oldIndex = scrossBarValue/15+1;
+    }
 }
 
 

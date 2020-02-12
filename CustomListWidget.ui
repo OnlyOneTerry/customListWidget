@@ -49,14 +49,37 @@ QListView{
   background-color:#172025;
 }
 
+QListView QScrollArea {
+   background-color:black;
+   border : 0px;
+}
+
 
 QScrollBar:vertical{
-  background-color:black;
-  width:8px;
+    background-color:black;
+	max-width:8px;
+	min-width:8px;
+    padding-top:0px;
+    padding-bottom:0px;
 }
 QScrollBar::handle:vertical{
-   background: white;
-   min-height: 60px;
+    background: white;
+	max-width:8px;
+	min-width:8px;
+    min-height:60px;
+}
+
+QScrollBar::add-line:vertical  
+{
+    height:0px;
+	width:0px;
+    subcontrol-position:bottom;
+}
+QScrollBar::sub-line:vertical 
+{
+    height:0px;
+	width:0px;
+    subcontrol-position:top;
 }
 
 QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
