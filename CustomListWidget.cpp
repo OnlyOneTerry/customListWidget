@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QSpacerItem>
 #include <QMessageBox>
+#include <QDesktopServices>
 
 CustomListWidget::CustomListWidget(QWidget *parent) :
     QWidget(parent),
@@ -20,6 +21,11 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
     ui->listView->setModel(_model);
     ui->listView->setItemDelegate(_delegate);
     ui->listView->setUniformItemSizes(true);
+    connect(_delegate,&CustomListDelegate::sigAnnData,this,&CustomListWidget::slotToAnno);
+    connect(_delegate,&CustomListDelegate::sigDelData,this,&CustomListWidget::slotDel);
+    connect(_delegate,&CustomListDelegate::sigEditData,this,&CustomListWidget::slotToAnno);
+    connect(_delegate,&CustomListDelegate::sigOpenDir,this,&CustomListWidget::slotOpenDir);
+    connect(_delegate,&CustomListDelegate::sigCheck,this,&CustomListWidget::slotCheck);
     //设置当listView为编辑状态
     ui->listView->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked);
     connect(ui->listView,&QListView::clicked,this,[&](QModelIndex index){
@@ -289,6 +295,31 @@ void CustomListWidget::moveToSpecifySeris(int idex)
 }
 
 void CustomListWidget::setSelectedItemAt(int idex)
+{
+
+}
+
+void CustomListWidget::slotOpenDir(int idex)
+{
+    Data* data =_model->findAt(idex);
+    if(!data) return;
+    QString serisDirPath = data->_address;
+    qDebug()<<"dirpaht is ----"<<serisDirPath;
+    bool ok = QDesktopServices::openUrl(QUrl(serisDirPath));
+
+}
+
+void CustomListWidget::slotCheck(int idex)
+{
+
+}
+
+void CustomListWidget::slotDel(int idex)
+{
+
+}
+
+void CustomListWidget::slotToAnno(int idex)
 {
 
 }

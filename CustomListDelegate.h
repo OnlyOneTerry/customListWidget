@@ -23,10 +23,11 @@ public:
     void setType(Type type);
     void setButtonList(const QList<QPushButton *> &value);
 signals:
-    void sigScan(const QModelIndex &index);//查看
-    void sigEditData(const QModelIndex &index);//编辑
-    void sigAnnData(const QModelIndex &index);//去标注
-    void sigDelData(const QModelIndex& index);//去删除
+    void sigCheck(int row);//查看
+    void sigEditData(int row);//编辑
+    void sigAnnData(int row);//去标注
+    void sigDelData(int row);//去删除
+    void sigOpenDir(int row);//打开文件所在位置
     void sigChangeCursor(bool flag); //true means handCursor else means arrowCursor
 private:
     QPoint _mousePoint;  // 鼠标位置.
@@ -34,6 +35,7 @@ private:
     QScopedPointer<QPushButton> _pEditButton;//编辑
     QScopedPointer<QPushButton> _pAnnButton;//去标注
     QScopedPointer<QPushButton> _pDelButton;//去删除
+    QScopedPointer<QPushButton> _pOpenDirButton;//打开文件夹路径
     QScopedPointer<QLabel> _pSerisIdLabel;
     QScopedPointer<QLabel> _pStatusLabel;
     QScopedPointer<QLabel> _pTimeLabel;

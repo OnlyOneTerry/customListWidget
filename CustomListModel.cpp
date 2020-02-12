@@ -167,6 +167,7 @@ bool CustomListModel::checkFileExist(int index)
 
 Data *CustomListModel::findAt(int index)
 {
+    if(index>m_data.size()) return nullptr;
     return m_data[index];
 }
 

@@ -30,6 +30,11 @@ public:
     int serchSpecifySeris(QString sersiId);
     void moveToSpecifySeris(int idex);
     void setSelectedItemAt(int idex);//设置当前inde项选中
+public slots:
+    void slotOpenDir(int idex);
+    void slotCheck(int idex);
+    void slotDel(int idex);
+    void slotToAnno(int idex);
 private:
     Ui::CustomListWidget *ui;
     CustomListDelegate* _delegate;

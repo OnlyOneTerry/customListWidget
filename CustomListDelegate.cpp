@@ -13,10 +13,11 @@ CustomListDelegate::CustomListDelegate(CustomListModel *model, QObject *parent):
     _pEditButton(new QPushButton("编辑")),
     _pAnnButton(new QPushButton("去标注")),
     _pDelButton(new QPushButton("删除")),
+    _pOpenDirButton(new QPushButton("打开文件位置")),
     _pSerisIdLabel(new QLabel),
     _pStatusLabel(new QLabel),
     _pTimeLabel(new QLabel),
-    _nSpacing(9),
+    _nSpacing(12),
     _nWidth(40),
     _nHeight(36),
     _type(DELEGATE_RBK),
@@ -27,13 +28,13 @@ CustomListDelegate::CustomListDelegate(CustomListModel *model, QObject *parent):
                                 QPushButton:hover {image:url(:/Images/openHover);} \
                                 QPushButton:pressed {image:url(:/Images/openPressed);}");
 
-    _pEditButton->setStyleSheet("QPushButton {border: none; background-color: transparent; image:url(:/Images/delete);} \
-                                 QPushButton:hover {image:url(:/Images/deleteHover);} \
-                                 QPushButton:pressed {image:url(:/Images/deletePressed);}");
-    _pAnnButton->setStyleSheet("QPushButton {border: none; background-color: transparent; image:url(:/Images/delete);} \
-                               QPushButton:hover {image:url(:/Images/deleteHover);} \
-                               QPushButton:pressed {image:url(:/Images/deletePressed);}");
-    _list<< tr("to Ann") << tr("Scan")<<tr("edit")<<tr("delete");
+                                _pEditButton->setStyleSheet("QPushButton {border: none; background-color: transparent; image:url(:/Images/delete);} \
+                                                            QPushButton:hover {image:url(:/Images/deleteHover);} \
+                                                            QPushButton:pressed {image:url(:/Images/deletePressed);}");
+                                                            _pAnnButton->setStyleSheet("QPushButton {border: none; background-color: transparent; image:url(:/Images/delete);} \
+                                                                                       QPushButton:hover {image:url(:/Images/deleteHover);} \
+                                                                                       QPushButton:pressed {image:url(:/Images/deletePressed);}");
+                                                                                       _list<< tr("to Ann") << tr("Scan")<<tr("edit")<<tr("delete")<<tr("open Location");
 }
 
 CustomListDelegate::~CustomListDelegate()
@@ -143,18 +144,22 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         pal.setColor(QPalette::WindowText, QColor(59,121,129));
         QApplication::style()->drawItemText(painter,button.rect,Qt::AlignHCenter|Qt::AlignVCenter ,pal,false,QString("去标注"),QPalette::Foreground);
 
-    #endif
-        for (int i = 0; i < 2; ++i)
+#endif
+        for (int i = 0; i < 3; ++i)
         {
             // 绘制按钮.
             QStyleOptionButton button;
 
             if(i==0){
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * i + _nSpacing * i,
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * i,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
             }else if(i == 1){
-                button.rect = QRect(option.rect.left() + nHalf*i*2 + _nWidth *i*2 + _nSpacing *i*2,
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth*i + _nSpacing*i*2,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
+            }else if(i==2)
+            {
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth*i + _nSpacing*3,
+                                    option.rect.top() + nTop,  _nWidth*2+20, _nHeight);
             }
             button.state |= QStyle::State_Enabled;
             if (button.rect.contains(_mousePoint))
@@ -178,6 +183,10 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
                 pal.setColor(QPalette::WindowText, QColor(86,88,89));
                 QApplication::style()->drawItemText(painter,button.rect,Qt::AlignLeft|Qt::AlignVCenter ,pal,false,QString("删除"),QPalette::Foreground);
                 break;
+            case 2:
+                pal.setColor(QPalette::WindowText, QColor(86,88,89));
+                QApplication::style()->drawItemText(painter,button.rect,Qt::AlignLeft|Qt::AlignVCenter ,pal,false,QString("打开所在位置"),QPalette::Foreground);
+                break;
             default:
                 break;
             }
@@ -186,12 +195,18 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     }
     else if(data->_annotStatus == Data::AnnoStatus::ANNOFINISHED||data->_annotStatus == Data::AnnoStatus::ANNOTAINGING)
     {
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < 4; ++i)
         {
             // 绘制按钮.
             QStyleOptionButton button;
-            button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * i + _nSpacing * i,
-                                option.rect.top() + nTop,  _nWidth, _nHeight);
+            if(i<3){
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * i,
+                                    option.rect.top() + nTop,  _nWidth, _nHeight);
+
+            }else if(i==3){
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * i,
+                                    option.rect.top() + nTop,  _nWidth*2+20, _nHeight);
+            }
             button.state |= QStyle::State_Enabled;
             if (button.rect.contains(_mousePoint))
             {
@@ -222,6 +237,10 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
                 //QApplication::style()->drawControl(QStyle::CE_PushButton, &button, painter, pWidget);
                 QApplication::style()->drawItemText(painter,button.rect,Qt::AlignLeft|Qt::AlignVCenter ,pal,false,QString("删除"),QPalette::Foreground);
                 break;
+            case 3:
+                pWidget =  _pOpenDirButton.data();
+                //QApplication::style()->drawControl(QStyle::CE_PushButton, &button, painter, pWidget);
+                QApplication::style()->drawItemText(painter,button.rect,Qt::AlignLeft|Qt::AlignVCenter ,pal,false,QString("打开所在位置"),QPalette::Foreground);
                 break;
             default:
                 break;
@@ -299,19 +318,23 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
         }
         return true;
 #endif
-     //标注和删除
-        #if 1
-        for (int i = 0; i < 2; ++i)
+        //标注和删除
+#if 1
+        for (int i = 0; i < 3; ++i)
         {
             QStyleOptionButton button;
             if(i==0){
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * i + _nSpacing * i,
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth *(i-1) + _nSpacing * i,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
             }else if(i == 1){
-                button.rect = QRect(option.rect.left() + nHalf*i*2 + _nWidth *i*2 + _nSpacing *i*2,
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth *i + _nSpacing *i*2,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
+            }else if(i == 2)
+            {
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth*i + _nSpacing*3,
+                                    option.rect.top() + nTop,  _nWidth*2+20, _nHeight);
             }
-                // 鼠标不在按钮之上.
+            // 鼠标不在按钮之上.
             if (!button.rect.contains(_mousePoint))
             {
                 if(QToolTip::isVisible()){
@@ -342,13 +365,17 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
             {
                 if (i == 0)
                 {
-                    emit sigScan(index);
+                    emit sigCheck(index.row());
                     qDebug()<<"go to scan....";
                 }
                 else if(i == 1)
                 {
-                    emit sigDelData(index);
+                    emit sigDelData(index.row());
                     qDebug()<<"go to delete....";
+                }else if(i == 2)
+                {
+                    emit sigOpenDir(index.row());
+                    qDebug()<<"go to open Dir....";
                 }
                 break;
             }
@@ -358,16 +385,21 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
             }
             return true;
         }
-        #endif
+#endif
 
     }
     else if(data->_annotStatus == Data::AnnoStatus::ANNOFINISHED||data->_annotStatus == Data::AnnoStatus::ANNOTAINGING){
 
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < 4; ++i)
         {
             QStyleOptionButton button;
-            button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * i + _nSpacing * i,
-                                option.rect.top() + nTop,  _nWidth, _nHeight);
+            if(i<3){
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * i,
+                                    option.rect.top() + nTop,  _nWidth, _nHeight);
+            }else{
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * i,
+                                    option.rect.top() + nTop,  _nWidth*2+20, _nHeight);
+            }
             // 鼠标不在按钮之上.
             if (!button.rect.contains(_mousePoint))
             {
@@ -401,17 +433,21 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
             {
                 if (i == 0)
                 {
-                    emit sigScan(index);
+                    emit sigCheck(index.row());
                     qDebug()<<"go to scan....";
                 }
                 else if(i == 1)
                 {
-                    emit sigEditData(index);
+                    emit sigEditData(index.row());
                     qDebug()<<"go to edit....";
                 }else if(i == 2)
                 {
-                    emit sigDelData(index);
+                    emit sigDelData(index.row());
                     qDebug()<<"go to delete....";
+                }else if(i == 3)
+                {
+                    emit sigOpenDir(index.row());
+                    qDebug()<<"go to open dir....";
                 }
                 break;
             }
