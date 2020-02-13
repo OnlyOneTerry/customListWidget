@@ -65,16 +65,16 @@ QWidget#rightListWidget
       <string notr="true">QPushButton#searchBtn{
    background-color:#043B4E;
    color:#ffffff;
-   min-height:40px;
-   max-height:40px;
+   min-height:30px;
+   max-height:30px;
    min-width:90px;
    max-width:90px;
    border-radius:0px;
 }
 
 QLineEdit#lineEidt{
-  min-height:40px;
-  max-height:40px;
+  min-height:30px;
+  max-height:30px;
    min-width:100px;
    max-width:200px;
 }</string>
@@ -114,13 +114,13 @@ QLineEdit#lineEidt{
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>40</height>
+          <height>30</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>300</width>
-          <height>40</height>
+          <height>30</height>
          </size>
         </property>
         <property name="focusPolicy">
@@ -140,6 +140,18 @@ color: #5E5F5F;</string>
       </item>
       <item>
        <widget class="QPushButton" name="searchBtn">
+        <property name="minimumSize">
+         <size>
+          <width>90</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>90</width>
+          <height>30</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>

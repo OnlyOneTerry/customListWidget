@@ -6,6 +6,7 @@
 #include <QSpacerItem>
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QClipboard>
 
 CustomListWidget::CustomListWidget(QWidget *parent) :
     QWidget(parent),
@@ -321,7 +322,15 @@ void CustomListWidget::keyPressEvent(QKeyEvent *event)
 {
     if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_C)
     {
-        QMessageBox::information(this,"title",QString("id is %1").arg(_currentId));
+
+        QClipboard *clipboard = QApplication::clipboard();   //获取系统剪贴板指针
+//        QString originalText = clipboard->text();	     //获取剪贴板上文本信息
+        clipboard->setText(_currentId);
+        QMessageBox box(QMessageBox::Information,tr("copy id"),_currentId);
+        box.setStandardButtons(QMessageBox::Ok|QMessageBox::Cancel);
+        box.button(QMessageBox::Cancel)->hide();
+        int ret = box.exec();
+//        QMessageBox::information(this,"title",QString("id is %1").arg(_currentId));
     }
 }
 
