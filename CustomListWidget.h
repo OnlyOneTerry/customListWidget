@@ -21,7 +21,7 @@ public:
     explicit CustomListWidget(QWidget *parent = nullptr);
     ~CustomListWidget();
     void initUI();
-    void appendData(QList<Data>& datalist);
+    void appendData(QList<ViewData>& datalist);
     void setListViewFont();
     void updateHeaderWid();
     void resizeEvent(QResizeEvent *event);
@@ -29,7 +29,7 @@ public:
     //search specify serisId
     int serchSpecifySeris(QString sersiId);
     void moveToSpecifySeris(int idex);
-    void setSelectedItemAt(int idex);//设置当前inde项选中
+    void setSearchedItemAt(int idex);//设置当前inde项选中
 public slots:
     void slotOpenDir(int idex);
     void slotCheck(int idex);

@@ -1,5 +1,5 @@
-#ifndef ANNOMAINWIDGET_H
-#define ANNOMAINWIDGET_H
+#ifndef ListViewMainWidget_H
+#define ListViewMainWidget_H
 
 #include <QWidget>
 #include "CustomListWidget.h"
@@ -8,16 +8,16 @@
 #include <QSqlQuery>
 #include <QMap>
 namespace Ui {
-class AnnoMainWidget;
+class ListViewMainWidget;
 }
-
-class AnnoMainWidget : public QWidget
+class DataBaseManager;
+class ListViewMainWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit AnnoMainWidget(QWidget *parent = 0);
-    ~AnnoMainWidget();
+    explicit ListViewMainWidget(QWidget *parent = 0);
+    ~ListViewMainWidget();
     void initDatabase();
     void initUI();
     void chaKan(QString path);
@@ -43,14 +43,16 @@ private slots:
     void on_searchBtn_clicked();
 
 private:
-    Ui::AnnoMainWidget *ui;
+    Ui::ListViewMainWidget *ui;
     CustomListWidget* _listWidgt = nullptr;
     //数据库操作相关
     QSqlDatabase database;
     QSqlQuery sql_query;
     QStringList _dirlist;//记录文件夹地址
     QMap<QString,QString> _dirPathAndDirNameMap;//文件夹路径和文件夹名称(序列编号)关联容器
-    QList<Data> _dataList;//缓存数据
+    QList<ViewData> _dataList;//缓存数据
+    int _recurseTime  = 0;//递归次数3次
+    DataBaseManager* _dataManager =nullptr;
 };
 
-#endif // ANNOMAINWIDGET_H
+#endif // ListViewMainWidget_H

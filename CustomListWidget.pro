@@ -30,8 +30,9 @@ SOURCES += \
     CustomListDelegate.cpp \
     CustomListWidget.cpp \
     NavigateWidget.cpp \
-    AnnoMainWidget.cpp \
-    CustomLineEdit.cpp
+    CustomLineEdit.cpp \
+    DataBaseManager.cpp \
+    ListViewMainWidget.cpp
 
 
 HEADERS += \
@@ -40,13 +41,14 @@ HEADERS += \
     CustomListWidget.h \
     CommonDataDefine.h \
     NavigateWidget.h \
-    AnnoMainWidget.h \
-    CustomLineEdit.h
+    CustomLineEdit.h \
+    DataBaseManager.h \
+    ListViewMainWidget.h
 
 FORMS += \
         CustomListWidget.ui \
     NavigateWidget.ui \
-    AnnoMainWidget.ui
+    ListViewMainWidget.ui
 
 
 # Default rules for deployment.

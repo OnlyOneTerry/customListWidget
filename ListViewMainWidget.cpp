@@ -1,26 +1,29 @@
-#include "AnnoMainWidget.h"
-#include "ui_AnnoMainWidget.h"
+#include "ListViewMainWidget.h"
+#include "ui_ListViewMainWidget.h"
 #include <QDebug>
 #include <QDir>
 #include <QDateTime>
 #include <QFileDialog>
 #include <QMessageBox>
+#include "DataBaseManager.h"
 
-AnnoMainWidget::AnnoMainWidget(QWidget *parent) :
+ListViewMainWidget::ListViewMainWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::AnnoMainWidget)
+    ui(new Ui::ListViewMainWidget)
 {
     ui->setupUi(this);
-    initDatabase();
+    //    initDatabase();
+    _dataManager = new DataBaseManager;
+    _dataManager->initDatabase();
     initUI();
 }
 
-AnnoMainWidget::~AnnoMainWidget()
+ListViewMainWidget::~ListViewMainWidget()
 {
     delete ui;
 }
 
-void AnnoMainWidget::initDatabase()
+void ListViewMainWidget::initDatabase()
 {
     database = QSqlDatabase::addDatabase("QSQLITE");
     database.setDatabaseName("AnnoDataBase.db");
@@ -43,7 +46,7 @@ void AnnoMainWidget::initDatabase()
     }
 }
 
-void AnnoMainWidget::initUI()
+void ListViewMainWidget::initUI()
 {
     _listWidgt = new CustomListWidget;
     ui->rightListWidget->layout()->addWidget(_listWidgt);
@@ -53,50 +56,49 @@ void AnnoMainWidget::initUI()
         ui->lineEdit->setText("");
         ui->iconWidget->hide();
         ui->lineEdit->setFixedWidth(325);
+        //清除被索行的背景色
+        _listWidgt->setSearchedItemAt(-1);
     });
     connect(ui->lineEdit,&CustomLineEdit::sigFocusOut,this,[=](){
-        //        ui->iconWidget->show();//输入序列号搜索相关文件
-        //        ui->lineEdit->setText(tr("input serisId to search relative file"));
 
     });
 }
 
-void AnnoMainWidget::chaKan(QString path)
+void ListViewMainWidget::chaKan(QString path)
 {
+    if(_recurseTime>=3) return;
+    _recurseTime++;
     QDir dir(path);
-
     foreach (auto mfi, dir.entryInfoList()) {
         if(mfi.isFile())
         {
             continue;
-            //            qDebug()<<"file :"<<mfi.fileName();
+            //  qDebug()<<"file :"<<mfi.fileName();
         }else{
             if(mfi.fileName()=="."||mfi.fileName()=="..")continue;
-            //            qDebug()<<"Entry absoluteFilePath is"<<mfi.absoluteFilePath();
+            //qDebug()<<"Entry absoluteFilePath is"<<mfi.absoluteFilePath();
             qDebug()<<"Entry dir name  is"<<mfi.baseName();
             _dirlist.append(mfi.absoluteFilePath());
             _dirPathAndDirNameMap.insert(mfi.absoluteFilePath(),mfi.baseName());
             chaKan(mfi.absoluteFilePath());
         }
-
     }
 }
 
-bool AnnoMainWidget::checkDirIsValid(QString dirPath)
+bool ListViewMainWidget::checkDirIsValid(QString dirPath)
 {
     QDir dir(dirPath);
 
     foreach (auto mfi, dir.entryInfoList()) {//若文件夹中包含.dicom文件则此文件夹为有效文件夹
         if(mfi.isFile()&&mfi.fileName().contains(".dicom"))
         {
-            //qDebug()<<"file :"<<mfi.fileName();
             return true;
         }
     }
     return false;
 }
 
-void AnnoMainWidget::getValidDir()
+void ListViewMainWidget::getValidDir()
 {
     foreach (auto path, _dirlist) {
         bool isValid = checkDirIsValid(path);
@@ -114,12 +116,13 @@ void AnnoMainWidget::getValidDir()
     {
         static int count = 0;
         count++;
-        insertToTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,"");
+        //        insertToTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,"");
+        _dataManager->insertToViewTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,"");
     }
 #endif
 }
 
-void AnnoMainWidget::insertToTable(QString id, QString address, int statusType, QString finishTime, QString importTime, QString result)
+void ListViewMainWidget::insertToTable(QString id, QString address, int statusType, QString finishTime, QString importTime, QString result)
 {
     if(!database.open())
     {
@@ -139,7 +142,7 @@ void AnnoMainWidget::insertToTable(QString id, QString address, int statusType, 
     qDebug()<<"operation result is--------------- "<<res;
 }
 
-void AnnoMainWidget::selectByStatusType(int statusType)
+void ListViewMainWidget::selectByStatusType(int statusType)
 {
     if(!database.open())
     {
@@ -160,10 +163,10 @@ void AnnoMainWidget::selectByStatusType(int statusType)
     }else{
         while(sql_query.next())
         {
-            Data data;
+            ViewData data;
             data._serisId = sql_query.value(0).toString();
             data._address = sql_query.value(1).toString();
-            data._annotStatus = (Data::AnnoStatus)sql_query.value(2).toInt();
+            data._annotStatus = (ViewData::AnnoStatus)sql_query.value(2).toInt();
             data._finishTime = sql_query.value(3).toString();
             data._importTime = sql_query.value(4).toString();
             data._annResult = sql_query.value(5).toString();
@@ -182,12 +185,12 @@ void AnnoMainWidget::selectByStatusType(int statusType)
     _listWidgt->appendData(_dataList);
 }
 
-void AnnoMainWidget::delById(QString id)
+void ListViewMainWidget::delById(QString id)
 {
 
 }
 
-void AnnoMainWidget::selectAll()
+void ListViewMainWidget::selectAll()
 {
     //查询数据
     if(!database.open())
@@ -207,10 +210,10 @@ void AnnoMainWidget::selectAll()
     {
         while(sql_query.next())
         {
-            Data data;
+            ViewData data;
             data._serisId = sql_query.value(0).toString();
             data._address = sql_query.value(1).toString();
-            data._annotStatus = (Data::AnnoStatus)sql_query.value(2).toInt();
+            data._annotStatus = (ViewData::AnnoStatus)sql_query.value(2).toInt();
             data._finishTime = sql_query.value(3).toString();
             data._importTime = sql_query.value(4).toString();
             data._annResult = sql_query.value(5).toString();
@@ -230,7 +233,7 @@ void AnnoMainWidget::selectAll()
     _listWidgt->appendData(_dataList);
 }
 
-void AnnoMainWidget::on_uploadBtn_clicked()
+void ListViewMainWidget::on_uploadBtn_clicked()
 {
     QString dirpath = QFileDialog::getExistingDirectory(this,"chose dir","./",QFileDialog::ShowDirsOnly);
     if(!dirpath.isEmpty())
@@ -240,38 +243,49 @@ void AnnoMainWidget::on_uploadBtn_clicked()
     //将获取的有效序列文件夹导入数据库
     getValidDir();
     //将有效的序列数据送入listveiw显示
-    selectAll();
+    //    selectAll();
+    _dataManager->selectAllFromViewTable();
+    _listWidgt->appendData(_dataManager->_dataList);
+    qDebug()<<"DataBaseManager dataList size is --------"<<_dataList.size();
 }
 
 
-void AnnoMainWidget::on_selectAllBtn_clicked()
+void ListViewMainWidget::on_selectAllBtn_clicked()
 {
-    selectAll();
+    //    selectAll();
+    _dataManager->selectAllFromViewTable();
+    _listWidgt->appendData(_dataManager->_dataList);
 }
 
-void AnnoMainWidget::on_finishedBtn_clicked()
+void ListViewMainWidget::on_finishedBtn_clicked()
 {
-    selectByStatusType(0);
+    //    selectByStatusType(0);
+    _dataManager->selectByStatusTypeFromViewTable(0);
+    _listWidgt->appendData(std::move(_dataManager->_dataList));
 }
 
-void AnnoMainWidget::on_annoingBtn_clicked()
-{
-
-    selectByStatusType(1);
-}
-
-void AnnoMainWidget::on_unAnnoBtn_clicked()
-{
-
-    selectByStatusType(2);
-}
-
-void AnnoMainWidget::on_importFinishedBtn_clicked()
+void ListViewMainWidget::on_annoingBtn_clicked()
 {
 
+    //    selectByStatusType(1);
+    _dataManager->selectByStatusTypeFromViewTable(1);
+    _listWidgt->appendData(std::move(_dataManager->_dataList));
 }
 
-void AnnoMainWidget::on_searchBtn_clicked()
+void ListViewMainWidget::on_unAnnoBtn_clicked()
+{
+
+    //    selectByStatusType(2);
+    _dataManager->selectByStatusTypeFromViewTable(2);
+    _listWidgt->appendData(std::move(_dataManager->_dataList));
+}
+
+void ListViewMainWidget::on_importFinishedBtn_clicked()
+{
+
+}
+
+void ListViewMainWidget::on_searchBtn_clicked()
 {
     QString serisId = ui->lineEdit->text();
     qDebug()<<"search id is --"<<serisId;

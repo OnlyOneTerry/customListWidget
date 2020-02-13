@@ -2,7 +2,7 @@
 #define COMMONDATADEFINE_H
 #include <QString>
 
-class Data
+class ViewData
 {
 public:
     enum AnnoStatus
@@ -12,7 +12,7 @@ public:
         UNANNOTATION,
         INVALID
     };
-    Data():_serisId("0"),
+    ViewData():_serisId("0"),
         _finishTime("--/--/--"),
         _importTime("--/--/--"),
         _annotStatus(UNANNOTATION),
@@ -21,7 +21,7 @@ public:
     {
 
     }
-    Data(const QString &id, const QString &finishTime,const QString &importTime, Data::AnnoStatus status, QString address, QString result):
+    ViewData(const QString &id, const QString &finishTime,const QString &importTime, ViewData::AnnoStatus status, QString address, QString result):
         _serisId(id),
         _finishTime(finishTime),
         _importTime(importTime),
@@ -32,7 +32,7 @@ public:
 
     }
 
-    Data(const Data &data)
+    ViewData(const ViewData &data)
     {
         this->_serisId = data._serisId;
         this->_finishTime = data._finishTime;

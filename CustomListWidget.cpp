@@ -31,7 +31,7 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
     //设置当listView为编辑状态
     ui->listView->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked);
     connect(ui->listView,&QListView::clicked,this,[&](QModelIndex index){
-        Data* data =_model->findAt(index.row());
+        ViewData* data =_model->findAt(index.row());
         _currentId = data->_serisId;
         _delegate->setSelectedRow(-1);//当切换选中行时，取消被搜索行的背景色
         qDebug()<<"current index id is ---------"<<data->_serisId ;
@@ -190,13 +190,13 @@ void CustomListWidget::initUI()
     {
         if(i%2==0)
         {
-            _model->append(QString("%1").arg(i),finishtTime,importTime,Data::AnnoStatus::UNANNOTATION,"./","{}");
+            _model->append(QString("%1").arg(i),finishtTime,importTime,ViewData::AnnoStatus::UNANNOTATION,"./","{}");
 
         }else if(i%3==0){
-            _model->append(QString("%1").arg(i),finishtTime,importTime,Data::AnnoStatus::ANNOFINISHED,"./","{}");
+            _model->append(QString("%1").arg(i),finishtTime,importTime,ViewData::AnnoStatus::ANNOFINISHED,"./","{}");
         }else {
 
-            _model->append(QString("%1").arg(i),finishtTime,importTime,Data::AnnoStatus::ANNOTAINGING,"./","{}");
+            _model->append(QString("%1").arg(i),finishtTime,importTime,ViewData::AnnoStatus::ANNOTAINGING,"./","{}");
         }
     }
     int dicomDirsNum = 104;
@@ -227,7 +227,7 @@ void CustomListWidget::initUI()
 }
 
 
-void CustomListWidget::appendData(QList<Data> &datalist)
+void CustomListWidget::appendData(QList<ViewData> &datalist)
 {
     _model->clear();
     ui->listView->update();
@@ -341,19 +341,19 @@ int CustomListWidget::serchSpecifySeris(QString sersiId)
 void CustomListWidget::moveToSpecifySeris(int idex)
 {
     ui->listView->verticalScrollBar()->setValue(idex);
-    _delegate->setSelectedRow(idex);//设置搜索的行的背景
+    setSearchedItemAt(idex);//设置搜索的行的背景
     //    QModelIndex modelIndex  = ui->listView->model()->index(idex,0);
     //    ui->listView->scrollTo(modelIndex);
 }
 
-void CustomListWidget::setSelectedItemAt(int idex)
+void CustomListWidget::setSearchedItemAt(int idex)
 {
-
+    _delegate->setSelectedRow(idex);//设置搜索的行的背景
 }
 
 void CustomListWidget::slotOpenDir(int idex)
 {
-    Data* data =_model->findAt(idex);
+    ViewData* data =_model->findAt(idex);
     if(!data) return;
     QString serisDirPath = data->_address;
     qDebug()<<"dirpaht is ----"<<serisDirPath;

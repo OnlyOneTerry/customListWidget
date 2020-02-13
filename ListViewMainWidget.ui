@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AnnoMainWidget</class>
- <widget class="QWidget" name="AnnoMainWidget">
+ <class>ListViewMainWidget</class>
+ <widget class="QWidget" name="ListViewMainWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

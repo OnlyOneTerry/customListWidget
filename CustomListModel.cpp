@@ -24,7 +24,7 @@ QVariant CustomListModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    const Data *data = m_data[row];
+    const ViewData *data = m_data[row];
     switch (role) {
     case  SerisId:
         return data->_serisId;
@@ -72,19 +72,19 @@ QHash<int, QByteArray> CustomListModel::roleNames() const
 }
 
 
-void CustomListModel::resetModel(const QString &id, const QString &finishTime, const QString &importTime, Data::AnnoStatus status, QString address, QString result)
+void CustomListModel::resetModel(const QString &id, const QString &finishTime, const QString &importTime, ViewData::AnnoStatus status, QString address, QString result)
 {
     beginResetModel();
     for(int i = 0;i<m_data.size();i++){
         if(m_data.at(i)->_serisId == id){
-            Data* tempData =new Data(id,finishTime,importTime,status,address,result);
+            ViewData* tempData =new ViewData(id,finishTime,importTime,status,address,result);
             m_data.replace(i,tempData);
         }
     }
     endResetModel();
 }
 
-void CustomListModel::insert(int index , Data *data)
+void CustomListModel::insert(int index , ViewData *data)
 {
     if(index < 0 || index > m_data.count()){
         return;
@@ -102,7 +102,7 @@ void CustomListModel::remove(int index)
     }
 
     beginRemoveRows(QModelIndex(),index,index);
-    Data* data = m_data.at(index);
+    ViewData* data = m_data.at(index);
     m_data.removeAt(index);
     m_serisIdlist.removeAt(index);
     //    deleteIndexFile("All/"+data._serisId);
@@ -140,10 +140,9 @@ bool CustomListModel::deleteIndexFile(QString path)
     return dir.rmpath(dir.absolutePath());
 }
 
-void CustomListModel::append(const QString &id, const QString &finishTime, const QString &importTime, Data::AnnoStatus state, QString address, QString result)
+void CustomListModel::append(const QString &id, const QString &finishTime, const QString &importTime, ViewData::AnnoStatus state, QString address, QString result)
 {
-
-    insert(m_data.count(),new Data(id,finishTime,importTime,state,address,result));
+    insert(m_data.count(),new ViewData(id,finishTime,importTime,state,address,result));
     qDebug()<<"insert data finishtime is -------"<<finishTime<<"importTime is --------"<<importTime;
 }
 
@@ -165,7 +164,7 @@ bool CustomListModel::checkFileExist(int index)
     }
 }
 
-Data *CustomListModel::findAt(int index)
+ViewData *CustomListModel::findAt(int index)
 {
     if(index>m_data.size()) return nullptr;
     return m_data[index];

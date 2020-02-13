@@ -26,25 +26,25 @@ public:
     void clear();
 
     //Add data;
-    void insert(int index, Data *data);
+    void insert(int index, ViewData *data);
     //Remove data;
     void remove(int index);
     bool deleteIndexFile(QString path);
    void append(const QString &id, const QString &finishTime,
-               const QString &importTime,Data::AnnoStatus state,
+               const QString &importTime,ViewData::AnnoStatus state,
                QString address,QString result);
     bool checkFileExist(int index);
-    Data* findAt(int index);
+    ViewData* findAt(int index);
     int getIndexById(QString serisID);
 signals:
     void dataChanged();
 public slots:
-    void resetModel(const QString &id, const QString &finishTime,const QString& importTime, Data::AnnoStatus status, QString address, QString result);
+    void resetModel(const QString &id, const QString &finishTime,const QString& importTime, ViewData::AnnoStatus status, QString address, QString result);
 protected:
     QHash<int, QByteArray> roleNames() const;
 private:
     int m_RobotCount;
-    QList<Data*> m_data;//用QList<Data>做数据源
+    QList<ViewData*> m_data;//用QList<Data>做数据源
     QList<QString> m_serisIdlist;//用于检测是否有重复的id
     int m_currentIndex = 0;
     QString m_currentId ="";

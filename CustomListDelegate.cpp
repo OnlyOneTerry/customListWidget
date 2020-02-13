@@ -92,24 +92,24 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
     //    qDebug()<<"option.rect.width() is "<<option.rect.width()<<"  height is "<<option.rect.height()<<"nHalf is "<<nHalf;
     //计算label显示区域
-    Data* data =_model->findAt(index.row());
+    ViewData* data =_model->findAt(index.row());
     QPalette pal;
     pal.setBrush(QPalette::Active,QPalette::Text,QBrush(Qt::green));
     pal.setColor(QPalette::WindowText, QColor(255,255,255));
     QApplication::style()->drawItemText(painter,QRect(option.rect.left()+50,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_serisId),QPalette::Foreground);
     QString status ;
     switch (data->_annotStatus) {
-    case Data::AnnoStatus::ANNOFINISHED:
+    case ViewData::AnnoStatus::ANNOFINISHED:
         status = "已完成标注";
         pal.setColor(QPalette::WindowText, QColor(67,140,148));
         QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/6.0,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,status,QPalette::Foreground);
         break;
-    case Data::AnnoStatus::ANNOTAINGING:
+    case ViewData::AnnoStatus::ANNOTAINGING:
         status = "标注中";
         pal.setColor(QPalette::WindowText, QColor(231,157,33));
         QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/6.0,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,status,QPalette::Foreground);
         break;
-    case Data::AnnoStatus::UNANNOTATION:
+    case ViewData::AnnoStatus::UNANNOTATION:
         status = "未标注";
         pal.setColor(QPalette::WindowText, QColor(255,255,255));
         QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/6.0,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,status,QPalette::Foreground);
@@ -122,7 +122,7 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()*1/2.0,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_importTime),QPalette::Foreground);
 
 
-    if(data->_annotStatus == Data::AnnoStatus::UNANNOTATION)
+    if(data->_annotStatus == ViewData::AnnoStatus::UNANNOTATION)
     {
 #if 0
         // 绘制按钮.
@@ -197,7 +197,7 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         }
 
     }
-    else if(data->_annotStatus == Data::AnnoStatus::ANNOFINISHED||data->_annotStatus == Data::AnnoStatus::ANNOTAINGING)
+    else if(data->_annotStatus == ViewData::AnnoStatus::ANNOFINISHED||data->_annotStatus == ViewData::AnnoStatus::ANNOTAINGING)
     {
         for (int i = 0; i < 4; ++i)
         {
@@ -272,8 +272,8 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
     emit sigChangeCursor(false);
 
     //计算label显示区域
-    Data* data =_model->findAt(index.row());
-    if(data->_annotStatus == Data::AnnoStatus::UNANNOTATION)
+    ViewData* data =_model->findAt(index.row());
+    if(data->_annotStatus == ViewData::AnnoStatus::UNANNOTATION)
     {
 #if 0
         QStyleOptionButton button;
@@ -392,7 +392,7 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
 #endif
 
     }
-    else if(data->_annotStatus == Data::AnnoStatus::ANNOFINISHED||data->_annotStatus == Data::AnnoStatus::ANNOTAINGING){
+    else if(data->_annotStatus == ViewData::AnnoStatus::ANNOFINISHED||data->_annotStatus == ViewData::AnnoStatus::ANNOTAINGING){
 
         for (int i = 0; i < 4; ++i)
         {
