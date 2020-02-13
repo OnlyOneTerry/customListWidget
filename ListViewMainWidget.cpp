@@ -48,6 +48,18 @@ void ListViewMainWidget::initDatabase()
 void ListViewMainWidget::initUI()
 {
     _listWidgt = new CustomListWidget;
+    connect(_listWidgt,&CustomListWidget::sigToAnno,this,[=](QString id,QString path){
+
+    });
+    connect(_listWidgt,&CustomListWidget::sigToEdit,this,[=](QString id,QString path){
+
+    });
+    connect(_listWidgt,&CustomListWidget::sigToDeleteById,this,[=](QString id){
+        _dataManager->delByIdFromViewTable(id);
+    });
+    connect(_listWidgt,&CustomListWidget::sigToCheckById,this,[=](QString id,QString path){
+
+    });
     ui->rightListWidget->layout()->addWidget(_listWidgt);
     _listWidgt->updateHeaderWid();
     ui->lineEdit->setAttribute(Qt::WA_InputMethodEnabled, false);
@@ -187,11 +199,6 @@ void ListViewMainWidget::selectByStatusType(int statusType)
         }
     }
     _listWidgt->appendData(_dataList);
-}
-
-void ListViewMainWidget::delById(QString id)
-{
-
 }
 
 void ListViewMainWidget::selectAll()

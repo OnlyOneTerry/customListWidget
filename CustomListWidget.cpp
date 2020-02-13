@@ -361,6 +361,11 @@ void CustomListWidget::slotOpenDir(int idex)
 
 }
 
+void CustomListWidget::slotEdit(int idex)
+{
+
+}
+
 void CustomListWidget::slotCheck(int idex)
 {
 
@@ -368,7 +373,14 @@ void CustomListWidget::slotCheck(int idex)
 
 void CustomListWidget::slotDel(int idex)
 {
-
+    //删除数据库中的数据
+    ViewData* data = _model->findAt(idex);
+    if(!data) return;
+    QString serisId = data->_serisId;
+    emit sigToDeleteById(serisId);
+    //删除listview model 中的数据
+    _model->remove(idex);
+    ui->listView->update();
 }
 
 void CustomListWidget::slotToAnno(int idex)

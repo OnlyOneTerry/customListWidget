@@ -25,7 +25,6 @@ public:
     void getValidDir();
     void insertToTable(QString id, QString address, int statusType, QString finishTime,QString importTime, QString result);
     void selectByStatusType(int statusType);
-    void delById(QString id);
     void selectAll();
 private slots:
     void on_uploadBtn_clicked();

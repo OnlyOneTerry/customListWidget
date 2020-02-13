@@ -30,8 +30,14 @@ public:
     int serchSpecifySeris(QString sersiId);
     void moveToSpecifySeris(int idex);
     void setSearchedItemAt(int idex);//设置当前inde项选中
+signals:
+    void sigToDeleteById(QString serisId);
+    void sigToCheckById(QString serisId,QString serisDirPath);
+    void sigToAnno(QString serisId,QString serisDirPath);
+    void sigToEdit(QString serisId,QString serisDirPath);
 public slots:
     void slotOpenDir(int idex);
+    void slotEdit(int idex);
     void slotCheck(int idex);
     void slotDel(int idex);
     void slotToAnno(int idex);

@@ -105,8 +105,7 @@ void CustomListModel::remove(int index)
     ViewData* data = m_data.at(index);
     m_data.removeAt(index);
     m_serisIdlist.removeAt(index);
-    //    deleteIndexFile("All/"+data._serisId);
-    deleteIndexFile(data->_address);
+    //deleteIndexFile(data->_address);//删除文件夹中的数据
     endRemoveRows();
 }
 

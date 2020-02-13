@@ -103,7 +103,25 @@ void DataBaseManager::selectByStatusTypeFromViewTable(int statusType)
 
 void DataBaseManager::delByIdFromViewTable(QString id)
 {
-
+    //查询数据
+    if(!database.open())
+    {
+        qDebug()<<"Error:Failed to connect database."<<database.lastError();
+    }
+    else{
+        qDebug()<<"successed to connect database.";
+    }
+    QString delete_sql = "delete from annotationTab where serisId =:id";
+    sql_query.prepare(delete_sql);
+    sql_query.bindValue(":id",id);
+    if(!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        qDebug()<<"deleted!";
+    }
 }
 
 void DataBaseManager::selectAllFromViewTable()
