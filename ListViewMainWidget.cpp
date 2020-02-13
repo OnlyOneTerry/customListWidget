@@ -14,7 +14,6 @@ ListViewMainWidget::ListViewMainWidget(QWidget *parent) :
     ui->setupUi(this);
     //    initDatabase();
     _dataManager = new DataBaseManager;
-    _dataManager->initDatabase();
     initUI();
 }
 
@@ -66,7 +65,12 @@ void ListViewMainWidget::initUI()
 
 void ListViewMainWidget::chaKan(QString path)
 {
-    if(_recurseTime>=3) return;
+    //递归遍历3层
+    if(_recurseTime>=4)
+    {
+        _recurseTime = 0;
+        return;
+    }
     _recurseTime++;
     QDir dir(path);
     foreach (auto mfi, dir.entryInfoList()) {
@@ -243,39 +247,32 @@ void ListViewMainWidget::on_uploadBtn_clicked()
     //将获取的有效序列文件夹导入数据库
     getValidDir();
     //将有效的序列数据送入listveiw显示
-    //    selectAll();
     _dataManager->selectAllFromViewTable();
-    _listWidgt->appendData(_dataManager->_dataList);
+    _listWidgt->appendData(std::move(_dataManager->_dataList));
     qDebug()<<"DataBaseManager dataList size is --------"<<_dataList.size();
 }
 
 
 void ListViewMainWidget::on_selectAllBtn_clicked()
 {
-    //    selectAll();
     _dataManager->selectAllFromViewTable();
-    _listWidgt->appendData(_dataManager->_dataList);
+    _listWidgt->appendData(std::move(_dataManager->_dataList));
 }
 
 void ListViewMainWidget::on_finishedBtn_clicked()
 {
-    //    selectByStatusType(0);
     _dataManager->selectByStatusTypeFromViewTable(0);
     _listWidgt->appendData(std::move(_dataManager->_dataList));
 }
 
 void ListViewMainWidget::on_annoingBtn_clicked()
 {
-
-    //    selectByStatusType(1);
     _dataManager->selectByStatusTypeFromViewTable(1);
     _listWidgt->appendData(std::move(_dataManager->_dataList));
 }
 
 void ListViewMainWidget::on_unAnnoBtn_clicked()
 {
-
-    //    selectByStatusType(2);
     _dataManager->selectByStatusTypeFromViewTable(2);
     _listWidgt->appendData(std::move(_dataManager->_dataList));
 }

@@ -4,7 +4,7 @@ DataBaseManager* DataBaseManager::_instance = nullptr;
 
 DataBaseManager::DataBaseManager()
 {
-//   initDatabase();
+   initDatabase();
 }
 
 DataBaseManager *DataBaseManager::getInstance()
