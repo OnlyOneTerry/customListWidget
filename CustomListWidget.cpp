@@ -33,6 +33,7 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
     connect(ui->listView,&QListView::clicked,this,[&](QModelIndex index){
         Data* data =_model->findAt(index.row());
         _currentId = data->_serisId;
+        _delegate->setSelectedRow(-1);//当切换选中行时，取消被搜索行的背景色
         qDebug()<<"current index id is ---------"<<data->_serisId ;
     });
     connect(_delegate,&CustomListDelegate::sigChangeCursor,this,[=](bool flg){
@@ -323,15 +324,12 @@ void CustomListWidget::keyPressEvent(QKeyEvent *event)
 {
     if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_C)
     {
-
         QClipboard *clipboard = QApplication::clipboard();   //获取系统剪贴板指针
-//        QString originalText = clipboard->text();	     //获取剪贴板上文本信息
         clipboard->setText(_currentId);
         QMessageBox box(QMessageBox::Information,tr("copy id"),_currentId);
         box.setStandardButtons(QMessageBox::Ok|QMessageBox::Cancel);
         box.button(QMessageBox::Cancel)->hide();
         int ret = box.exec();
-//        QMessageBox::information(this,"title",QString("id is %1").arg(_currentId));
     }
 }
 
@@ -343,9 +341,9 @@ int CustomListWidget::serchSpecifySeris(QString sersiId)
 void CustomListWidget::moveToSpecifySeris(int idex)
 {
     ui->listView->verticalScrollBar()->setValue(idex);
-
-    QModelIndex modelIndex  = ui->listView->model()->index(idex,0);
-    ui->listView->scrollTo(modelIndex);
+    _delegate->setSelectedRow(idex);//设置搜索的行的背景
+    //    QModelIndex modelIndex  = ui->listView->model()->index(idex,0);
+    //    ui->listView->scrollTo(modelIndex);
 }
 
 void CustomListWidget::setSelectedItemAt(int idex)

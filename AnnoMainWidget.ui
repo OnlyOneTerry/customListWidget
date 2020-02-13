@@ -76,7 +76,7 @@ QLineEdit#lineEidt{
   min-height:30px;
   max-height:30px;
   min-width:100px;
-  max-width:200px;
+  max-width:300px;
   background-color: #172125;
   color: #5E5F5F;
 }

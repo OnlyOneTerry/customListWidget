@@ -22,6 +22,7 @@ public:
     bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index);
     void setType(Type type);
     void setButtonList(const QList<QPushButton *> &value);
+    void setSelectedRow(int selectedRow);
 signals:
     void sigCheck(int row);//查看
     void sigEditData(int row);//编辑
@@ -46,7 +47,7 @@ private:
     int _nHeight;  // 按钮高度.
     int _nType;  // 按钮状态-1：划过 2：按下.
     Type _type;
-
+    int _SelectedRow=-1;//当前搜索到的行
     CustomListModel *_model=nullptr;
 };
 

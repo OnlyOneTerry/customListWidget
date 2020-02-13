@@ -77,7 +77,11 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
     }else {
         painter->fillRect(option.rect,QBrush(QColor(12,17,20)));
-
+    }
+    //搜索到的行
+    if((-1 != _SelectedRow)&&index.row()==_SelectedRow)
+    {
+        painter->fillRect(option.rect,QBrush(QColor(18,54,81)));
     }
 
 #if 1
@@ -470,4 +474,9 @@ void CustomListDelegate::setType(CustomListDelegate::Type type)
 void CustomListDelegate::setButtonList(const QList<QPushButton *> &value)
 {
 
+}
+
+void CustomListDelegate::setSelectedRow(int selectedRow)
+{
+   _SelectedRow = selectedRow;
 }

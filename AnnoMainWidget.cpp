@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QDateTime>
 #include <QFileDialog>
+#include <QMessageBox>
 
 AnnoMainWidget::AnnoMainWidget(QWidget *parent) :
     QWidget(parent),
@@ -51,11 +52,11 @@ void AnnoMainWidget::initUI()
     connect(ui->lineEdit,&CustomLineEdit::sigFocusIn,this,[=](){
         ui->lineEdit->setText("");
         ui->iconWidget->hide();
-        ui->lineEdit->setFixedWidth(ui->lineEdit->width()+25);
+        ui->lineEdit->setFixedWidth(325);
     });
     connect(ui->lineEdit,&CustomLineEdit::sigFocusOut,this,[=](){
-//        ui->iconWidget->show();//输入序列号搜索相关文件
-//        ui->lineEdit->setText(tr("input serisId to search relative file"));
+        //        ui->iconWidget->show();//输入序列号搜索相关文件
+        //        ui->lineEdit->setText(tr("input serisId to search relative file"));
 
     });
 }
@@ -280,6 +281,6 @@ void AnnoMainWidget::on_searchBtn_clicked()
         //跳转到指定的序列
         _listWidgt->moveToSpecifySeris(idex);
     }else{
-        qDebug()<<"not found....";
+        QMessageBox::information(this,"information",QString("not found...."));
     }
 }
