@@ -47,6 +47,17 @@ void AnnoMainWidget::initUI()
     _listWidgt = new CustomListWidget;
     ui->rightListWidget->layout()->addWidget(_listWidgt);
     _listWidgt->updateHeaderWid();
+    ui->lineEdit->setAttribute(Qt::WA_InputMethodEnabled, false);
+    connect(ui->lineEdit,&CustomLineEdit::sigFocusIn,this,[=](){
+        ui->lineEdit->setText("");
+        ui->iconWidget->hide();
+        ui->lineEdit->setFixedWidth(ui->lineEdit->width()+25);
+    });
+    connect(ui->lineEdit,&CustomLineEdit::sigFocusOut,this,[=](){
+//        ui->iconWidget->show();//输入序列号搜索相关文件
+//        ui->lineEdit->setText(tr("input serisId to search relative file"));
+
+    });
 }
 
 void AnnoMainWidget::chaKan(QString path)
@@ -271,5 +282,4 @@ void AnnoMainWidget::on_searchBtn_clicked()
     }else{
         qDebug()<<"not found....";
     }
-
 }

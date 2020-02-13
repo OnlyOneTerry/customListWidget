@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QClipboard>
+#include <QListView>
 
 CustomListWidget::CustomListWidget(QWidget *parent) :
     QWidget(parent),
@@ -342,6 +343,9 @@ int CustomListWidget::serchSpecifySeris(QString sersiId)
 void CustomListWidget::moveToSpecifySeris(int idex)
 {
     ui->listView->verticalScrollBar()->setValue(idex);
+
+    QModelIndex modelIndex  = ui->listView->model()->index(idex,0);
+    ui->listView->scrollTo(modelIndex);
 }
 
 void CustomListWidget::setSelectedItemAt(int idex)

@@ -8,7 +8,14 @@ CustomLineEdit::CustomLineEdit(QWidget *parent):QLineEdit(parent)
 
 void CustomLineEdit::focusInEvent(QFocusEvent *e)
 {
-    this->selectAll();
     qDebug()<<"---------focusInEvent----------";
+    emit sigFocusIn();
     QLineEdit::focusInEvent(e);
+}
+
+void CustomLineEdit::focusOutEvent(QFocusEvent *e)
+{
+    qDebug()<<"---------focusOutEvent----------";
+    emit sigFocusOut();
+    QLineEdit::focusOutEvent(e);
 }
