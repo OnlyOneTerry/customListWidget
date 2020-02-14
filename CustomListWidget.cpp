@@ -34,7 +34,6 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
         ViewData* data =_model->findAt(index.row());
         _currentId = data->_serisId;
         _delegate->setSelectedRow(-1);//当切换选中行时，取消被搜索行的背景色
-        qDebug()<<"current index id is ---------"<<data->_serisId ;
     });
     connect(_delegate,&CustomListDelegate::sigChangeCursor,this,[=](bool flg){
         if(flg){
@@ -342,8 +341,6 @@ void CustomListWidget::moveToSpecifySeris(int idex)
 {
     ui->listView->verticalScrollBar()->setValue(idex);
     setSearchedItemAt(idex);//设置搜索的行的背景
-    //    QModelIndex modelIndex  = ui->listView->model()->index(idex,0);
-    //    ui->listView->scrollTo(modelIndex);
 }
 
 void CustomListWidget::setSearchedItemAt(int idex)

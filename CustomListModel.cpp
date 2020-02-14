@@ -84,14 +84,11 @@ void CustomListModel::resetModel(const QString &id, const QString &finishTime, c
     endResetModel();
 }
 
-void CustomListModel::insert(int index , ViewData *data)
+void CustomListModel::insert(ViewData *data)
 {
-    if(index < 0 || index > m_data.count()){
-        return;
-    }
     if(m_serisIdlist.contains(data->_serisId))return;
     m_serisIdlist.append(data->_serisId);
-    m_data.insert(index,data);
+    m_data.append(data);
 }
 
 void CustomListModel::remove(int index)
@@ -100,13 +97,9 @@ void CustomListModel::remove(int index)
     if(index < 0 || index >= m_data.count()){
         return;
     }
-
-    beginRemoveRows(QModelIndex(),index,index);
-    ViewData* data = m_data.at(index);
     m_data.removeAt(index);
     m_serisIdlist.removeAt(index);
     //deleteIndexFile(data->_address);//删除文件夹中的数据
-    endRemoveRows();
 }
 
 bool CustomListModel::deleteIndexFile(QString path)
@@ -141,7 +134,7 @@ bool CustomListModel::deleteIndexFile(QString path)
 
 void CustomListModel::append(const QString &id, const QString &finishTime, const QString &importTime, ViewData::AnnoStatus state, QString address, QString result)
 {
-    insert(m_data.count(),new ViewData(id,finishTime,importTime,state,address,result));
+    insert(new ViewData(id,finishTime,importTime,state,address,result));
     qDebug()<<"insert data finishtime is -------"<<finishTime<<"importTime is --------"<<importTime;
 }
 

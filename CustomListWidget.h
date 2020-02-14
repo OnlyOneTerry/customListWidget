@@ -21,15 +21,14 @@ public:
     explicit CustomListWidget(QWidget *parent = nullptr);
     ~CustomListWidget();
     void initUI();
-    void appendData(QList<ViewData>& datalist);
+    void  appendData(QList<ViewData>& datalist);
     void setListViewFont();
     void updateHeaderWid();
     void resizeEvent(QResizeEvent *event);
     void keyPressEvent(QKeyEvent *event);
-    //search specify serisId
     int serchSpecifySeris(QString sersiId);
     void moveToSpecifySeris(int idex);
-    void setSearchedItemAt(int idex);//设置当前inde项选中
+    void setSearchedItemAt(int idex);//设置当前搜索到的行
 signals:
     void sigToDeleteById(QString serisId);
     void sigToCheckById(QString serisId,QString serisDirPath);
@@ -43,15 +42,15 @@ public slots:
     void slotToAnno(int idex);
 private:
     Ui::CustomListWidget *ui;
-    CustomListDelegate* _delegate;
-    CustomListModel* _model;
-    NavigateWidget* _navBtns;
+    CustomListDelegate* _delegate=nullptr;
+    CustomListModel* _model=nullptr;
+    NavigateWidget* _navBtns=nullptr;
     int _oldIndex = 0;
     int _oldValue = 0;//用于判断当前是value是增大还是减小（滚动条是向上滑动还是向下）
     bool _isClickBtnToChange = false;
     int _amountPage = 0;//总页数
     int _amountNum = 104;//总行数
-    QString _currentId = 0;
+    QString _currentId="";
 };
 
 #endif // CUSTOMLISTWIDGET_H

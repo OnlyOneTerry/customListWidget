@@ -106,10 +106,10 @@ void DataBaseManager::delByIdFromViewTable(QString id)
     //查询数据
     if(!database.open())
     {
-        qDebug()<<"Error:Failed to connect database."<<database.lastError();
+        qDebug()<<"Error:Failed to connect database to delete."<<database.lastError();
     }
     else{
-        qDebug()<<"successed to connect database.";
+        qDebug()<<"successed to connect database to delete.";
     }
     QString delete_sql = "delete from annotationTab where serisId =:id";
     sql_query.prepare(delete_sql);

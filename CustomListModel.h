@@ -26,7 +26,7 @@ public:
     void clear();
 
     //Add data;
-    void insert(int index, ViewData *data);
+    void insert(ViewData *data);
     //Remove data;
     void remove(int index);
     bool deleteIndexFile(QString path);

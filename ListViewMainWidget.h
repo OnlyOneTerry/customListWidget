@@ -14,18 +14,15 @@ class DataBaseManager;
 class ListViewMainWidget : public QWidget
 {
     Q_OBJECT
+public:
 
 public:
     explicit ListViewMainWidget(QWidget *parent = 0);
     ~ListViewMainWidget();
-    void initDatabase();
     void initUI();
     void chaKan(QString path);
     bool checkDirIsValid(QString dirPath);
     void getValidDir();
-    void insertToTable(QString id, QString address, int statusType, QString finishTime,QString importTime, QString result);
-    void selectByStatusType(int statusType);
-    void selectAll();
 private slots:
     void on_uploadBtn_clicked();
 
