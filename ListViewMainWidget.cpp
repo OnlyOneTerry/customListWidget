@@ -115,6 +115,7 @@ void ListViewMainWidget::getValidDir()
 
 void ListViewMainWidget::on_uploadBtn_clicked()
 {
+    _operationType = LOADNEW;
     QString dirpath = QFileDialog::getExistingDirectory(this,"chose dir","./",QFileDialog::ShowDirsOnly);
     if(!dirpath.isEmpty())
     {
@@ -125,32 +126,42 @@ void ListViewMainWidget::on_uploadBtn_clicked()
     //将有效的序列数据送入listveiw显示
     _dataManager->selectAllFromViewTable();
     _listWidgt->appendData(std::move(_dataManager->_dataList));
-    qDebug()<<"DataBaseManager dataList size is --------"<<_dataList.size();
+    QString num="insert num :"+ QString("%1").arg(_dataManager->getInsertNumThisTime());
+    _dataManager->setInsertNumThisTime(0);//复位
+    QMessageBox::information(this,"information",num);
 }
 
 
 void ListViewMainWidget::on_selectAllBtn_clicked()
 {
+    if(_operationType==SELECTALL) return;
     _dataManager->selectAllFromViewTable();
     _listWidgt->appendData(std::move(_dataManager->_dataList));
+    _operationType = SELECTALL;
 }
 
 void ListViewMainWidget::on_finishedBtn_clicked()
 {
+    if(_operationType==SELECTFNISHED) return;
     _dataManager->selectByStatusTypeFromViewTable(0);
     _listWidgt->appendData(std::move(_dataManager->_dataList));
+    _operationType = SELECTFNISHED;
 }
 
 void ListViewMainWidget::on_annoingBtn_clicked()
 {
+    if(_operationType==SELECTANNOING) return;
     _dataManager->selectByStatusTypeFromViewTable(1);
     _listWidgt->appendData(std::move(_dataManager->_dataList));
+    _operationType = SELECTANNOING;
 }
 
 void ListViewMainWidget::on_unAnnoBtn_clicked()
 {
+    if(_operationType==SELECTUNANNO) return;
     _dataManager->selectByStatusTypeFromViewTable(2);
     _listWidgt->appendData(std::move(_dataManager->_dataList));
+    _operationType = SELECTUNANNO;
 }
 
 void ListViewMainWidget::on_importFinishedBtn_clicked()

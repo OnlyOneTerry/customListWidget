@@ -15,7 +15,15 @@ class ListViewMainWidget : public QWidget
 {
     Q_OBJECT
 public:
-
+    enum SearchOpeationType
+    {
+        LOADNEW,
+        SELECTALL,
+        SELECTFNISHED,
+        SELECTUNANNO,
+        SELECTANNOING,
+        INVALID
+    };
 public:
     explicit ListViewMainWidget(QWidget *parent = 0);
     ~ListViewMainWidget();
@@ -49,6 +57,7 @@ private:
     QList<ViewData> _dataList;//缓存数据
     int _recurseTime  = 0;//递归次数3次
     DataBaseManager* _dataManager =nullptr;
+    SearchOpeationType _operationType =INVALID;
 };
 
 #endif // ListViewMainWidget_H

@@ -16,6 +16,8 @@ public:
      void selectByStatusTypeFromViewTable(int statusType);
      void delByIdFromViewTable(QString id);
      void selectAllFromViewTable();
+     void setInsertNumThisTime(int count);
+     int getInsertNumThisTime();
 public:
     DataBaseManager();
 private:
@@ -25,6 +27,7 @@ private:
     QSqlQuery sql_query;
 public:
     QList<ViewData> _dataList;//缓存数据
+    int _insertNumThisTime= 0;//本次插入的数量
 };
 
 #endif // DATABASEMANAGER_H

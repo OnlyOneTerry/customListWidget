@@ -4,7 +4,7 @@ DataBaseManager* DataBaseManager::_instance = nullptr;
 
 DataBaseManager::DataBaseManager()
 {
-   initDatabase();
+    initDatabase();
 }
 
 DataBaseManager *DataBaseManager::getInstance()
@@ -56,6 +56,10 @@ void DataBaseManager::insertToViewTable(QString id, QString address, int statusT
     sql_query.bindValue(":impTime",importTime);
     sql_query.bindValue(":result",result);
     bool res = sql_query.exec();
+    if(res)
+    {
+        _insertNumThisTime++;
+    }
     qDebug()<<"operation result is--------------- "<<res;
 }
 
@@ -164,5 +168,15 @@ void DataBaseManager::selectAllFromViewTable()
 #endif
         }
     }
+}
+
+void DataBaseManager::setInsertNumThisTime(int count)
+{
+    _insertNumThisTime = count;
+}
+
+int DataBaseManager::getInsertNumThisTime()
+{
+    return _insertNumThisTime;
 }
 
