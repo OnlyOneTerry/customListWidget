@@ -370,6 +370,9 @@ void CustomListWidget::slotCheck(int idex)
 
 void CustomListWidget::slotDel(int idex)
 {
+    QString infor = "are you sure to delete?";
+    QMessageBox::StandardButton res = QMessageBox::information(this,"delete",infor,QMessageBox::Yes|QMessageBox::No,QMessageBox::Yes);
+    if(res == QMessageBox::No) return;
     //删除数据库中的数据
     ViewData* data = _model->findAt(idex);
     if(!data) return;
