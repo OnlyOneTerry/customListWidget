@@ -369,17 +369,17 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
             {
                 if (i == 0)
                 {
+                    qDebug()<<"go to scan...."<<index.row();
                     emit sigCheck(index.row());
-                    qDebug()<<"go to scan....";
                 }
                 else if(i == 1)
                 {
+                    qDebug()<<"go to delete...."<<index.row();
                     emit sigDelData(index.row());
-                    qDebug()<<"go to delete....";
                 }else if(i == 2)
                 {
+                    qDebug()<<"go to open Dir...."<<index.row();
                     emit sigOpenDir(index.row());
-                    qDebug()<<"go to open Dir....";
                 }
                 break;
             }
@@ -437,21 +437,21 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
             {
                 if (i == 0)
                 {
+                    qDebug()<<"go to scan...."<<index.row();
                     emit sigCheck(index.row());
-                    qDebug()<<"go to scan....";
                 }
                 else if(i == 1)
                 {
+                    qDebug()<<"go to edit...."<<index.row();
                     emit sigEditData(index.row());
-                    qDebug()<<"go to edit....";
                 }else if(i == 2)
                 {
+                    qDebug()<<"go to delete...."<<index.row();
                     emit sigDelData(index.row());
-                    qDebug()<<"go to delete....";
                 }else if(i == 3)
                 {
+                    qDebug()<<"go to open dir...."<<index.row();
                     emit sigOpenDir(index.row());
-                    qDebug()<<"go to open dir....";
                 }
                 break;
             }

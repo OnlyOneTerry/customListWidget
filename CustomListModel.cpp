@@ -55,6 +55,10 @@ int CustomListModel::rowCount(const QModelIndex &parent) const
 
 void CustomListModel::clear()
 {
+    foreach (auto var, m_data) {
+        delete var;
+        var = nullptr;
+    }
     m_data.clear();
     m_serisIdlist.clear();
 }
@@ -93,11 +97,12 @@ void CustomListModel::insert(ViewData *data)
 
 void CustomListModel::remove(int index)
 {
-    qDebug()<<"remove index is --------------"<<index<<"m_data list size is ---------"<<m_data.count() ;
     if(index < 0 || index >= m_data.count()){
         return;
     }
+    qDebug()<<"remove index is --------------"<<index<<"m_data list size is ---------"<<m_data.count() ;
     m_data.removeAt(index);
+    qDebug()<<"m_data list size is ---------"<<m_data.count() ;
     m_serisIdlist.removeAt(index);
     //deleteIndexFile(data->_address);//删除文件夹中的数据
 }
@@ -141,6 +146,7 @@ void CustomListModel::append(const QString &id, const QString &finishTime, const
 
 bool CustomListModel::checkFileExist(int index)
 {
+    if(index<0||index>m_data.count()) return false;
     QString id = m_data.at(index)->_serisId;
     QString address = m_data.at(index)->_address;
     QFileInfo fi(address);
@@ -158,17 +164,17 @@ bool CustomListModel::checkFileExist(int index)
 
 ViewData *CustomListModel::findAt(int index)
 {
-    if(index>m_data.size()) return nullptr;
-    return m_data[index];
+    if(index>=m_data.size()) return nullptr;
+    return m_data.at(index);
 }
 
 int CustomListModel::getIndexById(QString serisID)
 {
     for(int i = 0;i<m_data.size();i++)
     {
-        if(m_data[i]->_serisId == serisID)
+        if(m_data.at(i)->_serisId == serisID)
         {
-            qDebug()<<"serisId is ---"<<m_data[i]->_serisId;
+            qDebug()<<"serisId is ---"<<m_data.at(i)->_serisId;
             return i;
         }
     }

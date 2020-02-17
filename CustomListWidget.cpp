@@ -31,7 +31,9 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
     //设置当listView为编辑状态
     ui->listView->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked);
     connect(ui->listView,&QListView::clicked,this,[&](QModelIndex index){
+        qDebug()<<"--------------listview --------clicked--------";
         ViewData* data =_model->findAt(index.row());
+        if(!data) return;
         _currentId = data->_serisId;
         _delegate->setSelectedRow(-1);//当切换选中行时，取消被搜索行的背景色
     });
@@ -371,7 +373,7 @@ void CustomListWidget::slotCheck(int idex)
 void CustomListWidget::slotDel(int idex)
 {
     QString infor = "are you sure to delete?";
-    QMessageBox::StandardButton res = QMessageBox::information(this,"delete",infor,QMessageBox::Yes|QMessageBox::No,QMessageBox::Yes);
+    QMessageBox::StandardButton res = QMessageBox::information(NULL,"delete",infor,QMessageBox::Yes|QMessageBox::No,QMessageBox::Yes);
     if(res == QMessageBox::No) return;
     //删除数据库中的数据
     ViewData* data = _model->findAt(idex);
