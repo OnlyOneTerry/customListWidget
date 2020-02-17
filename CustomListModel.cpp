@@ -39,7 +39,7 @@ QVariant CustomListModel::data(const QModelIndex &index, int role) const
     case SerisAnnoResult:
         return data->_annResult;
     case Qt::SizeHintRole:
-        return QSize(0, 40);
+        return QSize(0, 45);
 
     default:
         break;

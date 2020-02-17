@@ -293,7 +293,7 @@ void CustomListWidget::setListViewFont()
 {
     QFont font;
     font.setWeight(15);
-    font.setPixelSize(14);//设置字体大小
+    font.setPixelSize(18);//设置字体大小
     ui->listView->setFont(font);
 }
 
@@ -309,7 +309,7 @@ void CustomListWidget::updateHeaderWid()
     ui->labelImportTime->setGeometry(headerX+headerWidth*1/2,headerY,120,headerHeight);
     // qreal nHalf = (option.rect.width() - _nWidth * nCount - _nSpacing * (nCount - 1)) / 2.0;
     // button.rect = QRect(option.rect.left() + nHalf*2, option.rect.top() + nTop,  _nWidth, _nHeight);
-    qreal nHalf = headerWidth-40*3-9*2;//此处要与delegate绘制的各个控件位置对应
+    qreal nHalf = headerWidth-40*6-9*2;//此处要与delegate绘制的各个控件位置对应
     ui->labelOperation->setGeometry(headerX+nHalf,headerY,120,headerHeight);
 }
 

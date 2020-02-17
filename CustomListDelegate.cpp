@@ -17,7 +17,7 @@ CustomListDelegate::CustomListDelegate(CustomListModel *model, QObject *parent):
     _pSerisIdLabel(new QLabel),
     _pStatusLabel(new QLabel),
     _pTimeLabel(new QLabel),
-    _nSpacing(12),
+    _nSpacing(30),
     _nWidth(40),
     _nHeight(36),
     _type(DELEGATE_RBK),
@@ -116,10 +116,10 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         break;
     }
     pal.setColor(QPalette::WindowText, QColor(255,255,255));
-    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/3.0,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_finishTime),QPalette::Foreground);
+    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/3.0,option.rect.top(),138,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_finishTime),QPalette::Foreground);
 
     pal.setColor(QPalette::WindowText, QColor(255,255,255));
-    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()*1/2.0,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_importTime),QPalette::Foreground);
+    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()*1/2.0,option.rect.top(),138,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_importTime),QPalette::Foreground);
 
 
     if(data->_annotStatus == ViewData::AnnoStatus::UNANNOTATION)
@@ -155,15 +155,15 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
             QStyleOptionButton button;
 
             if(i==0){
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * i,
-                                    option.rect.top() + nTop,  _nWidth, _nHeight);
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-2) + _nSpacing * i,
+                                    option.rect.top() + nTop,  _nWidth+15, _nHeight);
             }else if(i == 1){
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth*i + _nSpacing*i*2,
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth*(i-1) + _nSpacing*i*2,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
             }else if(i==2)
             {
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth*i + _nSpacing*3,
-                                    option.rect.top() + nTop,  _nWidth*2+20, _nHeight);
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth*(i-1) + _nSpacing*3,
+                                    option.rect.top() + nTop,  _nWidth*2+30, _nHeight);
             }
             button.state |= QStyle::State_Enabled;
             if (button.rect.contains(_mousePoint))
@@ -204,12 +204,12 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
             // 绘制按钮.
             QStyleOptionButton button;
             if(i<3){
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * i,
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-2) + _nSpacing * i,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
 
             }else if(i==3){
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * i,
-                                    option.rect.top() + nTop,  _nWidth*2+20, _nHeight);
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-2) + _nSpacing * i,
+                                    option.rect.top() + nTop,  _nWidth*2+30, _nHeight);
             }
             button.state |= QStyle::State_Enabled;
             if (button.rect.contains(_mousePoint))
