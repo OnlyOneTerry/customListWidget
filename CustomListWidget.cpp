@@ -381,6 +381,11 @@ void CustomListWidget::slotDel(int idex)
     //删除listview model 中的数据
     _model->remove(idex);
     ui->listView->update();
+    //更新导航按钮个数
+    if(_model->getRowCount()%15 == 0)
+    {
+        emit sigUpdateNavBtns();
+    }
 }
 
 void CustomListWidget::slotToAnno(int idex)

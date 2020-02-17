@@ -328,15 +328,15 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
         {
             QStyleOptionButton button;
             if(i==0){
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth *(i-1) + _nSpacing * i,
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth *(i-2) + _nSpacing * i,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
             }else if(i == 1){
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth *i + _nSpacing *i*2,
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth *(i-1) + _nSpacing *i*2,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
             }else if(i == 2)
             {
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth*i + _nSpacing*3,
-                                    option.rect.top() + nTop,  _nWidth*2+20, _nHeight);
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth*(i-1) + _nSpacing*3,
+                                    option.rect.top() + nTop,  _nWidth*2+30, _nHeight);
             }
             // 鼠标不在按钮之上.
             if (!button.rect.contains(_mousePoint))
@@ -398,11 +398,11 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
         {
             QStyleOptionButton button;
             if(i<3){
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * i,
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-2) + _nSpacing * i,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
             }else{
-                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * i,
-                                    option.rect.top() + nTop,  _nWidth*2+20, _nHeight);
+                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-2) + _nSpacing * i,
+                                    option.rect.top() + nTop,  _nWidth*2+30, _nHeight);
             }
             // 鼠标不在按钮之上.
             if (!button.rect.contains(_mousePoint))

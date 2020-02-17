@@ -31,7 +31,10 @@ public:
     void chaKan(QString path);
     bool checkDirIsValid(QString dirPath);
     void getValidDir();
+public slots:
+    void slotUpdateNavBtns();//用于删除时更新导航按钮
 private slots:
+
     void on_uploadBtn_clicked();
 
     void on_selectAllBtn_clicked();

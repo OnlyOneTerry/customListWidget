@@ -6,7 +6,7 @@
 #include "CustomListModel.h"
 
 CustomListModel::CustomListModel(QObject *parent)
-    : QAbstractListModel(parent), m_RobotCount(0)
+    : QAbstractListModel(parent), m_Count(0)
 {
 
 }
@@ -174,6 +174,12 @@ int CustomListModel::getIndexById(QString serisID)
     }
     return -1;
 }
+
+int CustomListModel::getRowCount() const
+{
+    return m_data.size();
+}
+
 
 
 

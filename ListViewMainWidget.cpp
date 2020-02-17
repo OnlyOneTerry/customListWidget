@@ -33,6 +33,9 @@ void ListViewMainWidget::initUI()
     connect(_listWidgt,&CustomListWidget::sigToDeleteById,this,[=](QString id){
         _dataManager->delByIdFromViewTable(id);
     });
+    connect(_listWidgt,&CustomListWidget::sigUpdateNavBtns,this,[=](){
+        slotUpdateNavBtns();
+    });
     connect(_listWidgt,&CustomListWidget::sigToCheckById,this,[=](QString id,QString path){
 
     });
@@ -111,6 +114,31 @@ void ListViewMainWidget::getValidDir()
         _dataManager->insertToViewTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,"");
     }
 #endif
+}
+
+void ListViewMainWidget::slotUpdateNavBtns()
+{
+    //通过重新加载该类型的数据更新导航按钮
+    switch (_operationType) {
+    case SELECTALL:
+        _dataManager->selectAllFromViewTable();
+        _listWidgt->appendData(std::move(_dataManager->_dataList));
+        break;
+    case SELECTFNISHED:
+        _dataManager->selectByStatusTypeFromViewTable(0);
+        _listWidgt->appendData(std::move(_dataManager->_dataList));
+        break;
+    case SELECTUNANNO:
+        _dataManager->selectByStatusTypeFromViewTable(2);
+        _listWidgt->appendData(std::move(_dataManager->_dataList));
+        break;
+    case SELECTANNOING:
+        _dataManager->selectByStatusTypeFromViewTable(1);
+        _listWidgt->appendData(std::move(_dataManager->_dataList));
+        break;
+    default:
+        break;
+    }
 }
 
 void ListViewMainWidget::on_uploadBtn_clicked()

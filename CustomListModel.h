@@ -36,6 +36,7 @@ public:
     bool checkFileExist(int index);
     ViewData* findAt(int index);
     int getIndexById(QString serisID);
+    int getRowCount()const;
 signals:
     void dataChanged();
 public slots:
@@ -43,7 +44,7 @@ public slots:
 protected:
     QHash<int, QByteArray> roleNames() const;
 private:
-    int m_RobotCount;
+    int m_Count=0;
     QList<ViewData*> m_data;//用QList<Data>做数据源
     QList<QString> m_serisIdlist;//用于检测是否有重复的id
     int m_currentIndex = 0;

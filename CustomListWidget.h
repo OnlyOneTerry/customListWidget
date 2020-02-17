@@ -34,6 +34,7 @@ signals:
     void sigToCheckById(QString serisId,QString serisDirPath);
     void sigToAnno(QString serisId,QString serisDirPath);
     void sigToEdit(QString serisId,QString serisDirPath);
+    void sigUpdateNavBtns();
 public slots:
     void slotOpenDir(int idex);
     void slotEdit(int idex);
