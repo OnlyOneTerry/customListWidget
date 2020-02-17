@@ -32,6 +32,7 @@
   min-height:40;
   min-width:40;
   background-color:#172025;
+  border-radius:5px;
   color:#616266;
 }</string>
   </property>
@@ -90,14 +91,14 @@
       <widget class="QPushButton" name="btn2">
        <property name="minimumSize">
         <size>
-         <width>42</width>
-         <height>42</height>
+         <width>40</width>
+         <height>40</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>42</width>
-         <height>42</height>
+         <width>40</width>
+         <height>40</height>
         </size>
        </property>
        <property name="text">
