@@ -421,7 +421,7 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
             {
                 _nType = 0;
                 // 设置鼠标样式为手型
-                QToolTip::showText(pEvent->globalPos(), _list.at(i+1));
+//                QToolTip::showText(pEvent->globalPos(), _list.at(i+1));
                 emit sigChangeCursor(true);
                 //              qDebug()<<"------------cursor change.......";
                 break;

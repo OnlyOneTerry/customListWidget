@@ -17,7 +17,6 @@ class ListViewMainWidget : public QWidget
 public:
     enum SearchOpeationType
     {
-        LOADNEW,
         SELECTALL,
         SELECTFNISHED,
         SELECTUNANNO,

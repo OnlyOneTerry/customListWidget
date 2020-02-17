@@ -31,9 +31,8 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
     //设置当listView为编辑状态
     ui->listView->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked);
     connect(ui->listView,&QListView::clicked,this,[&](QModelIndex index){
-        qDebug()<<"--------------listview --------clicked--------";
         ViewData* data =_model->findAt(index.row());
-        if(!data) return;
+        if(!data) return;//切记要判断空，当点击删除最后一个时会导致崩溃
         _currentId = data->_serisId;
         _delegate->setSelectedRow(-1);//当切换选中行时，取消被搜索行的背景色
     });
@@ -384,6 +383,7 @@ void CustomListWidget::slotDel(int idex)
     _model->remove(idex);
     ui->listView->update();
     //更新导航按钮个数
+    qDebug()<<"model size is --------"<<_model->getRowCount();
     if(_model->getRowCount()%15 == 0)
     {
         emit sigUpdateNavBtns();

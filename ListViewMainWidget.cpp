@@ -36,6 +36,7 @@ void ListViewMainWidget::initUI()
     });
     connect(_listWidgt,&CustomListWidget::sigUpdateNavBtns,this,[=](){
         slotUpdateNavBtns();
+        qDebug()<<"----slotUpdateNavBtns --- ";
     });
     connect(_listWidgt,&CustomListWidget::sigToCheckById,this,[=](QString id,QString path){
 
@@ -120,6 +121,7 @@ void ListViewMainWidget::getValidDir()
 void ListViewMainWidget::slotUpdateNavBtns()
 {
     //通过重新加载该类型的数据更新导航按钮
+    qDebug()<<"_peration type is --------"<<_operationType;
     switch (_operationType) {
     case SELECTALL:
         _dataManager->selectAllFromViewTable();
@@ -144,7 +146,6 @@ void ListViewMainWidget::slotUpdateNavBtns()
 
 void ListViewMainWidget::on_uploadBtn_clicked()
 {
-    _operationType = LOADNEW;
     QString dirpath = QFileDialog::getExistingDirectory(this,"chose dir","./",QFileDialog::ShowDirsOnly);
     if(!dirpath.isEmpty())
     {
