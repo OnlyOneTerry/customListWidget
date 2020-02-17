@@ -32,7 +32,9 @@ SOURCES += \
     NavigateWidget.cpp \
     CustomLineEdit.cpp \
     DataBaseManager.cpp \
-    ListViewMainWidget.cpp
+    ListViewMainWidget.cpp \
+    ProgressDialog.cpp
+
 
 
 HEADERS += \
@@ -43,12 +45,15 @@ HEADERS += \
     NavigateWidget.h \
     CustomLineEdit.h \
     DataBaseManager.h \
-    ListViewMainWidget.h
+    ListViewMainWidget.h \
+    ProgressDialog.h
+
 
 FORMS += \
         CustomListWidget.ui \
     NavigateWidget.ui \
-    ListViewMainWidget.ui
+    ListViewMainWidget.ui \
+    ProgressDialog.ui
 
 
 # Default rules for deployment.

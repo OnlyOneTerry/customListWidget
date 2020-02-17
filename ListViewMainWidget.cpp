@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include "DataBaseManager.h"
+#include "ProgressDialog.h"
 
 ListViewMainWidget::ListViewMainWidget(QWidget *parent) :
     QWidget(parent),
@@ -147,6 +148,9 @@ void ListViewMainWidget::on_uploadBtn_clicked()
     QString dirpath = QFileDialog::getExistingDirectory(this,"chose dir","./",QFileDialog::ShowDirsOnly);
     if(!dirpath.isEmpty())
     {
+        ProgressDialog& processDialog = ProgressDialog::getGlobalDialog();
+        processDialog.show();
+        processDialog.setMessage("正在上传序列数据...");
         chaKan(dirpath);
     }
     //将获取的有效序列文件夹导入数据库
@@ -154,6 +158,8 @@ void ListViewMainWidget::on_uploadBtn_clicked()
     //将有效的序列数据送入listveiw显示
     _dataManager->selectAllFromViewTable();
     _listWidgt->appendData(std::move(_dataManager->_dataList));
+    //关闭等待提示窗
+    ProgressDialog::getGlobalDialog().safeCloseDialog();
     QString num="insert num :"+ QString("%1").arg(_dataManager->getInsertNumThisTime());
     _dataManager->setInsertNumThisTime(0);//复位
     QMessageBox::information(this,"information",num);
