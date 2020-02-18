@@ -23,6 +23,7 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
     ui->listView->setModel(_model);
     ui->listView->setItemDelegate(_delegate);
     ui->listView->setUniformItemSizes(true);
+
     connect(_delegate,&CustomListDelegate::sigAnnData,this,&CustomListWidget::slotToAnno);
     connect(_delegate,&CustomListDelegate::sigDelData,this,&CustomListWidget::slotDel);
     connect(_delegate,&CustomListDelegate::sigEditData,this,&CustomListWidget::slotToAnno);
@@ -171,7 +172,7 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
 
         _oldValue = value;
     });
-    initUI();
+//    initUI();
     setListViewFont();
 }
 

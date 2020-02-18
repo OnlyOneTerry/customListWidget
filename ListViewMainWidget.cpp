@@ -54,6 +54,8 @@ void ListViewMainWidget::initUI()
     connect(ui->lineEdit,&CustomLineEdit::sigFocusOut,this,[=](){
 
     });
+    //初始化时加载数据库中已存在的数据
+    on_selectAllBtn_clicked();
 }
 
 void ListViewMainWidget::chaKan(QString path)
@@ -113,9 +115,22 @@ void ListViewMainWidget::getValidDir()
         static int count = 0;
         count++;
         //        insertToTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,"");
+        //获取有效文件夹下，第一个dicom文件的文件名作为序列号
+        QString serisId = getDicomName(iter.key());//入参是文件夹名称
         _dataManager->insertToViewTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,"");
     }
 #endif
+}
+
+QString ListViewMainWidget::getDicomName(QString dicomDirPath)
+{
+    QString dicmName;
+    QDir dir(dicomDirPath);
+    //获取文件夹下第一个dicom
+    QFileInfoList mfi = dir.entryInfoList();
+    QFileInfo first =  mfi.first();
+    //parse first dicom file to get name
+    return dicmName;
 }
 
 void ListViewMainWidget::slotUpdateNavBtns()
