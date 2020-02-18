@@ -116,10 +116,10 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         break;
     }
     pal.setColor(QPalette::WindowText, QColor(255,255,255));
-    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/3.0,option.rect.top(),138,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_finishTime),QPalette::Foreground);
+    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/3.0,option.rect.top(),145,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_finishTime),QPalette::Foreground);
 
     pal.setColor(QPalette::WindowText, QColor(255,255,255));
-    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()*1/2.0,option.rect.top(),138,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_importTime),QPalette::Foreground);
+    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()*1/2.0,option.rect.top(),145,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_importTime),QPalette::Foreground);
 
 
     if(data->_annotStatus == ViewData::AnnoStatus::UNANNOTATION)

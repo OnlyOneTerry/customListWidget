@@ -180,3 +180,108 @@ int DataBaseManager::getInsertNumThisTime()
     return _insertNumThisTime;
 }
 
+QString DataBaseManager::getAnnoResult(QString serisId)
+{
+    //查询数据
+    if(!database.open())
+    {
+        qDebug()<<"Error:Failed to connect database."<<database.lastError();
+    }
+    else{
+        qDebug()<<"successed to connect database.";
+    }
+    QString delete_sql = "select result from annotationTab where serisId =:id";
+    sql_query.prepare(delete_sql);
+    sql_query.bindValue(":id",serisId);
+    QString annoResult ;
+    if(!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        while(sql_query.next()){
+            annoResult = sql_query.value(0).toString();
+            qDebug()<<"get result is -------"<<annoResult;
+            return annoResult;
+        }
+    }
+}
+
+void DataBaseManager::updateAnnoResult(QString serisId, QString newResult)
+{
+    if(!database.open())
+    {
+        qDebug()<<"Error:Failed to connect database."<<database.lastError();
+    }
+    else{
+        qDebug()<<"successed to connect database.";
+    }
+
+    //修改数据
+    QString alterResult_sql = "update  annotationTab set result =:newResult where serisId =:id";
+    sql_query.prepare(alterResult_sql);
+    sql_query.bindValue(":id",serisId);
+    sql_query.bindValue(":newResult",newResult);
+    if(!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        qDebug() << "updated result!";
+    }
+}
+
+void DataBaseManager::updateAnnoFinishedTime(QString serisId, QString finishTime)
+{
+    if(!database.open())
+    {
+        qDebug()<<"Error:Failed to connect database."<<database.lastError();
+    }
+    else{
+        qDebug()<<"successed to connect database.";
+    }
+
+    //修改数据
+    QString alterFinishTime_sql = "update  annotationTab set finishTime =:newTime where serisId =:id";
+    sql_query.prepare(alterFinishTime_sql);
+    sql_query.bindValue(":id",serisId);
+    sql_query.bindValue(":newTime",finishTime);
+    if(!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        qDebug() << "updated finishTime!";
+    }
+}
+
+void DataBaseManager::updateAnnoStatus(QString serisId, int newStatus)
+{
+    if(!database.open())
+    {
+        qDebug()<<"Error:Failed to connect database."<<database.lastError();
+    }
+    else{
+        qDebug()<<"successed to connect database.";
+    }
+
+    //修改数据
+    QString alterStatus_sql = "update  annotationTab set annoStatus =:newStatus where serisId =:id";
+    sql_query.prepare(alterStatus_sql);
+    sql_query.bindValue(":id",serisId);
+    sql_query.bindValue(":newStatus",newStatus);
+    if(!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        qDebug() << "updated status!";
+    }
+}
+
+
+

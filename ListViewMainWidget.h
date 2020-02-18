@@ -29,7 +29,9 @@ public:
     void initUI();
     void chaKan(QString path);
     bool checkDirIsValid(QString dirPath);
+    QString getParseDirName(QString dirPath);
     void getValidDir();
+    QString getDicomName(QString dicomDirPath);
 public slots:
     void slotUpdateNavBtns();//用于删除时更新导航按钮
 private slots:

@@ -68,6 +68,10 @@ void ListViewMainWidget::chaKan(QString path)
     }
     _recurseTime++;
     QDir dir(path);
+    //加载当前文件夹
+    _dirlist.append(path);
+     QString dirName = getParseDirName(path);
+    _dirPathAndDirNameMap.insert(path,dirName);
     foreach (auto mfi, dir.entryInfoList()) {
         if(mfi.isFile())
         {
@@ -87,13 +91,20 @@ bool ListViewMainWidget::checkDirIsValid(QString dirPath)
 {
     QDir dir(dirPath);
 
-    foreach (auto mfi, dir.entryInfoList()) {//若文件夹中包含.dicom文件则此文件夹为有效文件夹
-        if(mfi.isFile()&&mfi.fileName().contains(".dicom"))
+    foreach (auto mfi, dir.entryInfoList()) {//若文件夹中包含.dcm文件则此文件夹为有效文件夹
+        if(mfi.isFile()&&mfi.fileName().contains(".dcm"))
         {
             return true;
         }
     }
     return false;
+}
+
+QString ListViewMainWidget::getParseDirName(QString dirPath)
+{
+   int idex = dirPath.lastIndexOf("/");
+   QString dirName = dirPath.right(dirPath.length()-idex-1);
+   return dirName;
 }
 
 void ListViewMainWidget::getValidDir()

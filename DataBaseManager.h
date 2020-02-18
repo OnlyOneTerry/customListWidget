@@ -18,6 +18,14 @@ public:
      void selectAllFromViewTable();
      void setInsertNumThisTime(int count);
      int getInsertNumThisTime();
+     //通过序列id获取标注结果
+     QString getAnnoResult(QString serisId);
+     //通过序列id修改标注结果
+     void  updateAnnoResult(QString serisId,QString newResult);
+     //通过序列号更新完成时间
+     void  updateAnnoFinishedTime(QString serisId,QString finishTime);
+     //通过序列号更新标注状态
+     void updateAnnoStatus(QString serisId, int newStatus);
 public:
     DataBaseManager();
 private:
