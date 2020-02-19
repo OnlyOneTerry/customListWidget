@@ -128,6 +128,49 @@ void DataBaseManager::delByIdFromViewTable(QString id)
     }
 }
 
+void DataBaseManager::selectByLikeIdFromViewTable(QString likeId)
+{
+    //查询数据
+    if(!database.open())
+    {
+        qDebug()<<"Error:Failed to connect database."<<database.lastError();
+    }
+    else{
+        qDebug()<<"successed to connect database.";
+    }
+    _dataList.clear();
+    QString sqlString = "select * from annotationTab where  serisId LIKE'%"+likeId+ "%'";
+    sql_query.exec(sqlString);
+    if(!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        while(sql_query.next())
+        {
+            ViewData data;
+            data._serisId = sql_query.value(0).toString();
+            data._address = sql_query.value(1).toString();
+            data._annotStatus = (ViewData::AnnoStatus)sql_query.value(2).toInt();
+            data._finishTime = sql_query.value(3).toString();
+            data._importTime = sql_query.value(4).toString();
+            data._annResult = sql_query.value(5).toString();
+            qDebug()<<"selectall finishTime is -----"<<data._finishTime<<"importTiem is ---------"<<data._importTime<<"\n";
+            _dataList.append(data);
+#if 1
+            QString id = sql_query.value(0).toString();
+            QString address = sql_query.value(1).toString();
+            int statusType = sql_query.value(2).toInt();
+            QString finishTime = sql_query.value(3).toString();
+            QString importTime = sql_query.value(4).toString();
+            QString annoResult = sql_query.value(5).toString();
+            qDebug()<<QString("id:%1    address:%2    statusType:%3 finishTime:%4 importTime:%5 annoResult:%6").arg(id).arg(address).arg(statusType).arg(finishTime).arg(importTime).arg(annoResult);
+#endif
+        }
+    }
+}
+
 void DataBaseManager::selectAllFromViewTable()
 {
     //查询数据
@@ -193,7 +236,7 @@ QString DataBaseManager::getAnnoResult(QString serisId)
     QString delete_sql = "select result from annotationTab where serisId =:id";
     sql_query.prepare(delete_sql);
     sql_query.bindValue(":id",serisId);
-    QString annoResult ;
+    QString annoResult ="";
     if(!sql_query.exec())
     {
         qDebug()<<sql_query.lastError();
@@ -206,6 +249,7 @@ QString DataBaseManager::getAnnoResult(QString serisId)
             return annoResult;
         }
     }
+    return annoResult;
 }
 
 void DataBaseManager::updateAnnoResult(QString serisId, QString newResult)

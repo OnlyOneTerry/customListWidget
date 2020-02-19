@@ -18,6 +18,8 @@ public:
      void selectAllFromViewTable();
      void setInsertNumThisTime(int count);
      int getInsertNumThisTime();
+     //根据序列号模糊查询
+     void selectByLikeIdFromViewTable(QString likeId);
      //通过序列id获取标注结果
      QString getAnnoResult(QString serisId);
      //通过序列id修改标注结果

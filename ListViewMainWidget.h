@@ -21,6 +21,7 @@ public:
         SELECTFNISHED,
         SELECTUNANNO,
         SELECTANNOING,
+        SELECTBYLIKEID,
         INVALID
     };
 public:

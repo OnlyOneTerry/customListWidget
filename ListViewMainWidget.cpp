@@ -232,14 +232,19 @@ void ListViewMainWidget::on_importFinishedBtn_clicked()
 
 void ListViewMainWidget::on_searchBtn_clicked()
 {
+    _operationType = SELECTBYLIKEID;
     QString serisId = ui->lineEdit->text();
     qDebug()<<"search id is --"<<serisId;
-    int idex = _listWidgt->serchSpecifySeris(serisId);
-    if(idex>=0)
-    {
-        //跳转到指定的序列
-        _listWidgt->moveToSpecifySeris(idex);
-    }else{
-        QMessageBox::information(this,"information",QString("not found...."));
-    }
+
+    _dataManager->selectByLikeIdFromViewTable(serisId);
+    _listWidgt->appendData(std::move(_dataManager->_dataList));
+
+//    int idex = _listWidgt->serchSpecifySeris(serisId);
+//    if(idex>=0)
+//    {
+//        //跳转到指定的序列
+//        _listWidgt->moveToSpecifySeris(idex);
+//    }else{
+//        QMessageBox::information(this,"information",QString("not found...."));
+//    }
 }
