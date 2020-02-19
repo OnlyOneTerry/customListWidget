@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include "DataBaseManager.h"
 #include "ProgressDialog.h"
+#include <QAxObject>
 
 ListViewMainWidget::ListViewMainWidget(QWidget *parent) :
     QWidget(parent),
@@ -70,7 +71,7 @@ void ListViewMainWidget::chaKan(QString path)
     QDir dir(path);
     //加载当前文件夹
     _dirlist.append(path);
-     QString dirName = getParseDirName(path);
+    QString dirName = getParseDirName(path);
     _dirPathAndDirNameMap.insert(path,dirName);
     foreach (auto mfi, dir.entryInfoList()) {
         if(mfi.isFile())
@@ -102,9 +103,9 @@ bool ListViewMainWidget::checkDirIsValid(QString dirPath)
 
 QString ListViewMainWidget::getParseDirName(QString dirPath)
 {
-   int idex = dirPath.lastIndexOf("/");
-   QString dirName = dirPath.right(dirPath.length()-idex-1);
-   return dirName;
+    int idex = dirPath.lastIndexOf("/");
+    QString dirName = dirPath.right(dirPath.length()-idex-1);
+    return dirName;
 }
 
 void ListViewMainWidget::getValidDir()
@@ -228,6 +229,58 @@ void ListViewMainWidget::on_unAnnoBtn_clicked()
 void ListViewMainWidget::on_importFinishedBtn_clicked()
 {
 
+    QString filepath=QFileDialog::getSaveFileName(NULL,QObject::tr("Save orbit"),"/untitled.xlsx",QObject::tr("Microsoft Office 2007 (*.xlsx)"));//获取保存路径
+    QList<QVariant> allRowsData;//保存所有行数据
+    allRowsData.clear();
+    if(!filepath.isEmpty()){
+        //提示窗
+        ProgressDialog& processDialog = ProgressDialog::getGlobalDialog();
+        processDialog.show();
+        processDialog.setMessage("正在导出数据...");
+
+        //获取已完成数据
+        _dataManager->selectByStatusTypeFromViewTable(0);
+        QList<ViewData> dataList = std::move(_dataManager->_dataList);
+
+        //导出主体功能
+        QAxObject *excel = new QAxObject("Excel.Application");//连接Excel控件
+        excel->dynamicCall("SetVisible (bool Visible)",false);//不显示窗体
+        excel->setProperty("DisplayAlerts", true);//不显示任何警告信息。如果为true那么在关闭是会出现类似“文件已修改，是否保存”的提示
+        QAxObject *workbooks = excel->querySubObject("WorkBooks");//获取工作簿集合
+        workbooks->dynamicCall("Add");//新建一个工作簿
+        QAxObject *workbook  = excel->querySubObject("ActiveWorkBook");//获取当前工作簿
+        QAxObject *worksheets = workbook->querySubObject("Sheets");//获取工作表集合
+        QAxObject *worksheet = worksheets->querySubObject("Item(int)",1);//获取工作表集合的工作表1，即sheet1、
+        QStringList header;
+        header<<"serisID"<<"path"<<"finishTiem"<<"1zhifang"<<"1xianwei"<<"1gaihua"<<"1chuxue"<<"2zhifang"<<"2xianwei"<<"2gaihua"<<"2chuxue"<<"3zhifang"<<"3xianwei"<<"3gaihua"<<"3chuxue"<<"diagnostic";
+        allRowsData.append(QVariant(header));
+        for(int row = 0; row < dataList.size(); row++)
+        {
+            QStringList aRowData;
+            QString annoResult = dataList.at(row)._annResult;
+            //解析annoResult获取诊断结果和各指标
+            aRowData<<dataList.at(row)._serisId<<dataList.at(row)._address<<dataList.at(row)._finishTime<<"cc"<<"ee"<<"dd"<<"cc"<<"ee"<<"ff"<<"ee"<<"dd"<<"cc"<<"ee"<<"ff"<<"ee"<<"ff";
+            allRowsData.append(QVariant(aRowData));
+        }
+        QAxObject *range = worksheet->querySubObject("Range(const QString )", "A1:P"+QString("%1").arg(10));//A-P单元格存放所需的字段
+        range->dynamicCall("SetValue(const QVariant&)",QVariant(allRowsData));//存储所有数据到 excel 中,批量操作,速度极快
+        range->querySubObject("Font")->setProperty("Size", 10);//设置字号
+
+        //        QAxObject *cell = worksheet->querySubObject("Range(QVariant, QVariant)","A1");//获取单元格
+        //        cell = worksheet->querySubObject("Cells(int, int)", 1, 1);//等同于上一句
+        //        cell->dynamicCall("SetValue(const QVariant&)",QVariant(123));//存储一个 int 数据到 excel 的单元格中
+        //        cell->dynamicCall("SetValue(const QVariant&)",QVariant("abc"));//存储一个 string 数据到 excel 的单元格中
+        //        QString str = cell->dynamicCall("Value2()").toString();//读取单元格中的值
+        //        cout<<"\nThe value of cell is "<<str.toStdString()<<endl;
+        worksheet->querySubObject("Range(const QString&)", "1:1")->setProperty("RowHeight", 60);//调整第一行行高
+        workbook->dynamicCall("SaveAs(const QString&)",QDir::toNativeSeparators(filepath));//保存至filepath，注意一定要用QDir::toNativeSeparators将路径中的"/"转换为"\"，不然一定保存不了。
+        workbook->dynamicCall("Close()");//关闭工作簿
+        excel->dynamicCall("Quit()");//关闭excel
+        delete excel;
+        excel=NULL;
+        //关闭提示窗
+        processDialog.safeCloseDialog(1);
+    }
 }
 
 void ListViewMainWidget::on_searchBtn_clicked()
@@ -239,12 +292,12 @@ void ListViewMainWidget::on_searchBtn_clicked()
     _dataManager->selectByLikeIdFromViewTable(serisId);
     _listWidgt->appendData(std::move(_dataManager->_dataList));
 
-//    int idex = _listWidgt->serchSpecifySeris(serisId);
-//    if(idex>=0)
-//    {
-//        //跳转到指定的序列
-//        _listWidgt->moveToSpecifySeris(idex);
-//    }else{
-//        QMessageBox::information(this,"information",QString("not found...."));
-//    }
+    //    int idex = _listWidgt->serchSpecifySeris(serisId);
+    //    if(idex>=0)
+    //    {
+    //        //跳转到指定的序列
+    //        _listWidgt->moveToSpecifySeris(idex);
+    //    }else{
+    //        QMessageBox::information(this,"information",QString("not found...."));
+    //    }
 }
