@@ -32,6 +32,7 @@ public:
     bool checkDirIsValid(QString dirPath);
     QString getParseDirName(QString dirPath);
     void getValidDir();
+    QString readJsonFile(QString path);
     QString getDicomName(QString dicomDirPath);
 public slots:
     void slotUpdateNavBtns();//用于删除时更新导航按钮

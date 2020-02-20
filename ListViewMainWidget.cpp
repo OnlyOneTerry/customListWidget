@@ -8,6 +8,10 @@
 #include "DataBaseManager.h"
 #include "ProgressDialog.h"
 #include <QAxObject>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QIODevice>
 
 ListViewMainWidget::ListViewMainWidget(QWidget *parent) :
     QWidget(parent),
@@ -129,9 +133,24 @@ void ListViewMainWidget::getValidDir()
         //        insertToTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,"");
         //获取有效文件夹下，第一个dicom文件的文件名作为序列号
         QString serisId = getDicomName(iter.key());//入参是文件夹名称
-        _dataManager->insertToViewTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,"");
+        QString tempResultJson = readJsonFile("D:/1.json");
+        _dataManager->insertToViewTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,tempResultJson);
     }
 #endif
+}
+
+QString ListViewMainWidget::readJsonFile(QString path)
+{
+    QString result="";
+    QFile file(path);
+    if(!file.open(QIODevice::ReadOnly) )
+    {
+        qDebug()<<"failed to open file";
+
+    }
+    result = file.readAll();
+    file.close();
+    return result;
 }
 
 QString ListViewMainWidget::getDicomName(QString dicomDirPath)
@@ -258,8 +277,36 @@ void ListViewMainWidget::on_importFinishedBtn_clicked()
         {
             QStringList aRowData;
             QString annoResult = dataList.at(row)._annResult;
+            QJsonParseError parseJsonErr;
+            QJsonDocument doc = QJsonDocument::fromJson(annoResult.toUtf8(),&parseJsonErr);
+            if(!(parseJsonErr.error==QJsonParseError::NoError))
+            {
+                qDebug()<<tr("parse error");
+                return;
+            }
+
+            aRowData<<dataList.at(row)._serisId<<dataList.at(row)._address<<dataList.at(row)._finishTime;//先获取序列号，地址，完成时间
+
+            QJsonObject jsonObject = doc.object();
+            int diagnostic = jsonObject.value("diagnosic").toInt();
+            QJsonArray list = jsonObject.value("list").toArray();
+            foreach (auto var, list) {
+                QJsonObject  item = var.toObject();
+                QJsonObject  fiber = item.value("fiber").toObject();//纤维 2
+                double fiberS = fiber.value("area").toDouble();
+                QJsonObject  calcification = item.value("calcification").toObject();//钙化 3
+                double calS = calcification.value("area").toDouble();
+                QJsonObject  fat = item.value("fat").toObject();//脂肪 1
+                double fatS = fat.value("area").toDouble();
+                QJsonObject  bleeding = item.value("bleeding").toObject();//出血 4
+                double bleedingS = bleeding.value("area").toDouble();
+                aRowData<<QString("%1").arg(fatS)<<QString("%1").arg(fiberS)<<QString("%1").arg(calS)<<QString("%1").arg(bleedingS);
+                qDebug()<<"fiber is"<<fiberS<<"cal is"<<calS<<"fat is"<<fatS<<"bleeding is"<<bleedingS;
+            }
+
+            aRowData<<QString("%1").arg(diagnostic);//诊断结果
+
             //解析annoResult获取诊断结果和各指标
-            aRowData<<dataList.at(row)._serisId<<dataList.at(row)._address<<dataList.at(row)._finishTime<<"cc"<<"ee"<<"dd"<<"cc"<<"ee"<<"ff"<<"ee"<<"dd"<<"cc"<<"ee"<<"ff"<<"ee"<<"ff";
             allRowsData.append(QVariant(aRowData));
         }
         QAxObject *range = worksheet->querySubObject("Range(const QString )", "A1:P"+QString("%1").arg(10));//A-P单元格存放所需的字段
