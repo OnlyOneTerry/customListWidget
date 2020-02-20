@@ -133,7 +133,7 @@ void ListViewMainWidget::getValidDir()
         //        insertToTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,"");
         //获取有效文件夹下，第一个dicom文件的文件名作为序列号
         QString serisId = getDicomName(iter.key());//入参是文件夹名称
-        QString tempResultJson = readJsonFile("D:/1.json");
+        QString tempResultJson = readJsonFile("D:/1.json");//临时测试代码读取json格式的字符串
         _dataManager->insertToViewTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,tempResultJson);
     }
 #endif
@@ -245,7 +245,7 @@ void ListViewMainWidget::on_unAnnoBtn_clicked()
     _operationType = SELECTUNANNO;
 }
 
-void ListViewMainWidget::on_importFinishedBtn_clicked()
+void ListViewMainWidget::on_exportFinishedBtn_clicked()
 {
 
     QString filepath=QFileDialog::getSaveFileName(NULL,QObject::tr("Save orbit"),"/untitled.xlsx",QObject::tr("Microsoft Office 2007 (*.xlsx)"));//获取保存路径

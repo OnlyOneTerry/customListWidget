@@ -49,6 +49,8 @@ private:
     Type _type;
     int _SelectedRow=-1;//当前搜索到的行
     CustomListModel *_model=nullptr;
+    int  _buttonIndex = -1;//记录按下的是第几个按钮
+    int  _currentPressRow = -1;
 };
 
 

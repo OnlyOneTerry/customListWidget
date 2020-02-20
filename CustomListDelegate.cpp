@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QToolTip>
+#include <QEvent>
+
 #pragma execution_character_set("utf-8")
 
 CustomListDelegate::CustomListDelegate(CustomListModel *model, QObject *parent):
@@ -23,15 +25,16 @@ CustomListDelegate::CustomListDelegate(CustomListModel *model, QObject *parent):
     _type(DELEGATE_RBK),
     _model(model)
 {
+
     // 设置按钮正常、划过、按下样式
-    _pScanButton->setStyleSheet("QPushButton {border: none; background-color: transparent; image:url(:/Images/open);} \
+    _pScanButton->setStyleSheet("{border: 2px solid; background-color: black; image:url(:/Images/open);} \
                                 QPushButton:hover {image:url(:/Images/openHover);} \
                                 QPushButton:pressed {image:url(:/Images/openPressed);}");
 
-                                _pEditButton->setStyleSheet("QPushButton {border: none; background-color: transparent; image:url(:/Images/delete);} \
+                                _pEditButton->setStyleSheet("QPushButton {border: none; background-color: black; image:url(:/Images/delete);} \
                                                             QPushButton:hover {image:url(:/Images/deleteHover);} \
                                                             QPushButton:pressed {image:url(:/Images/deletePressed);}");
-                                                            _pAnnButton->setStyleSheet("QPushButton {border: none; background-color: transparent; image:url(:/Images/delete);} \
+                                                            _pAnnButton->setStyleSheet("QPushButton {border: none; background-color: black; image:url(:/Images/delete);} \
                                                                                        QPushButton:hover {image:url(:/Images/deleteHover);} \
                                                                                        QPushButton:pressed {image:url(:/Images/deletePressed);}");
                                                                                        _list<< tr("to Ann") << tr("Scan")<<tr("edit")<<tr("delete")<<tr("open Location");
@@ -44,7 +47,7 @@ CustomListDelegate::~CustomListDelegate()
 
 void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-
+    qDebug()<<"index is---"<<index.row();
 #if 0
     Data* data =_model->findAt(index.row());
     if(data)
@@ -96,30 +99,30 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     QPalette pal;
     pal.setBrush(QPalette::Active,QPalette::Text,QBrush(Qt::green));
     pal.setColor(QPalette::WindowText, QColor(255,255,255));
-    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+50,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_serisId),QPalette::Foreground);
+    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+50,option.rect.top(),120,45),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_serisId),QPalette::Foreground);
     QString status ;
     switch (data->_annotStatus) {
     case ViewData::AnnoStatus::ANNOFINISHED:
         status = "已完成标注";
         pal.setColor(QPalette::WindowText, QColor(67,140,148));
-        QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/6.0,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,status,QPalette::Foreground);
+        QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/6.0,option.rect.top(),120,45),Qt::AlignVCenter ,pal,false,status,QPalette::Foreground);
         break;
     case ViewData::AnnoStatus::ANNOTAINGING:
         status = "标注中";
         pal.setColor(QPalette::WindowText, QColor(231,157,33));
-        QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/6.0,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,status,QPalette::Foreground);
+        QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/6.0,option.rect.top(),120,45),Qt::AlignVCenter ,pal,false,status,QPalette::Foreground);
         break;
     case ViewData::AnnoStatus::UNANNOTATION:
         status = "未标注";
         pal.setColor(QPalette::WindowText, QColor(255,255,255));
-        QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/6.0,option.rect.top(),120,40),Qt::AlignVCenter ,pal,false,status,QPalette::Foreground);
+        QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/6.0,option.rect.top(),120,45),Qt::AlignVCenter ,pal,false,status,QPalette::Foreground);
         break;
     }
     pal.setColor(QPalette::WindowText, QColor(255,255,255));
-    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/3.0,option.rect.top(),145,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_finishTime),QPalette::Foreground);
+    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()/3.0,option.rect.top(),145,45),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_finishTime),QPalette::Foreground);
 
     pal.setColor(QPalette::WindowText, QColor(255,255,255));
-    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()*1/2.0,option.rect.top(),145,40),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_importTime),QPalette::Foreground);
+    QApplication::style()->drawItemText(painter,QRect(option.rect.left()+option.rect.width()*1/2.0,option.rect.top(),145,45),Qt::AlignVCenter ,pal,false,QString("%1").arg(data->_importTime),QPalette::Foreground);
 
 
     if(data->_annotStatus == ViewData::AnnoStatus::UNANNOTATION)
@@ -177,19 +180,36 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
                     button.state |= QStyle::State_Sunken;//press
                 }
             }
-
             switch (i) {
             case 0:
-                pal.setColor(QPalette::WindowText, QColor(59,121,129));
+            {
+                if(_buttonIndex==0&&_currentPressRow == index.row()){
+                    pal.setColor(QPalette::WindowText, QColor(255,255,255));
+                }else{
+                    pal.setColor(QPalette::WindowText, QColor(59,121,129));
+                }
                 QApplication::style()->drawItemText(painter,button.rect,Qt::AlignHCenter|Qt::AlignVCenter ,pal,false,QString("去标注"),QPalette::Foreground);
+            }
                 break;
             case 1:
-                pal.setColor(QPalette::WindowText, QColor(86,88,89));
+            {
+                if(_buttonIndex==1&&_currentPressRow == index.row()){
+                    pal.setColor(QPalette::WindowText, QColor(255,255,255));
+                }else{
+                    pal.setColor(QPalette::WindowText, QColor(86,88,89));
+                }
                 QApplication::style()->drawItemText(painter,button.rect,Qt::AlignLeft|Qt::AlignVCenter ,pal,false,QString("删除"),QPalette::Foreground);
+            }
                 break;
             case 2:
-                pal.setColor(QPalette::WindowText, QColor(86,88,89));
+            {
+                if(_buttonIndex==2&&_currentPressRow == index.row()){
+                    pal.setColor(QPalette::WindowText, QColor(255,255,255));
+                }else{
+                    pal.setColor(QPalette::WindowText, QColor(86,88,89));
+                }
                 QApplication::style()->drawItemText(painter,button.rect,Qt::AlignLeft|Qt::AlignVCenter ,pal,false,QString("打开所在位置"),QPalette::Foreground);
+            }
                 break;
             default:
                 break;
@@ -223,28 +243,47 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
                     button.state |= QStyle::State_Sunken;//press
                 }
             }
-            QWidget *pWidget = nullptr;
+
             switch (i) {
             case 0:
-                pWidget =  _pScanButton.data();
-                //                QApplication::style()->drawControl(QStyle::CE_PushButton, &button, painter, pWidget);
-                pal.setColor(QPalette::WindowText, QColor(86,88,89));
+            {
+                if(_buttonIndex==3&&_currentPressRow == index.row()){
+                    pal.setColor(QPalette::WindowText, QColor(255,255,255));
+                }else{
+                    pal.setColor(QPalette::WindowText, QColor(86,88,89));
+                }
                 QApplication::style()->drawItemText(painter,button.rect,Qt::AlignLeft|Qt::AlignVCenter ,pal,false,QString("查看"),QPalette::Foreground);
+            }
                 break;
             case 1:
-                pWidget =  _pEditButton.data();
-                //              QApplication::style()->drawControl(QStyle::CE_PushButton, &button, painter, pWidget);
+            {
+                if(_buttonIndex==4&&_currentPressRow == index.row()){
+                    pal.setColor(QPalette::WindowText, QColor(255,255,255));
+                }else{
+                    pal.setColor(QPalette::WindowText, QColor(86,88,89));
+                }
                 QApplication::style()->drawItemText(painter,button.rect,Qt::AlignLeft|Qt::AlignVCenter ,pal,false,QString("编辑"),QPalette::Foreground);
+            }
                 break;
             case 2:
-                pWidget =  _pDelButton.data();
-                //QApplication::style()->drawControl(QStyle::CE_PushButton, &button, painter, pWidget);
+            {
+                if(_buttonIndex==5&&_currentPressRow == index.row()){
+                    pal.setColor(QPalette::WindowText, QColor(255,255,255));
+                }else{
+                    pal.setColor(QPalette::WindowText, QColor(86,88,89));
+                }
                 QApplication::style()->drawItemText(painter,button.rect,Qt::AlignLeft|Qt::AlignVCenter ,pal,false,QString("删除"),QPalette::Foreground);
+            }
                 break;
             case 3:
-                pWidget =  _pOpenDirButton.data();
-                //QApplication::style()->drawControl(QStyle::CE_PushButton, &button, painter, pWidget);
+            {
+                if(_buttonIndex==6&&_currentPressRow == index.row()){
+                    pal.setColor(QPalette::WindowText, QColor(255,255,255));
+                }else{
+                    pal.setColor(QPalette::WindowText, QColor(86,88,89));
+                }
                 QApplication::style()->drawItemText(painter,button.rect,Qt::AlignLeft|Qt::AlignVCenter ,pal,false,QString("打开所在位置"),QPalette::Foreground);
+            }
                 break;
             default:
                 break;
@@ -258,9 +297,9 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
 bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
-    qDebug()<<"---------------editorEvent-------------";
+    qDebug()<<"---------------editorEvent-------------"<<index.row();
+    _currentPressRow = index.row();
     _nType = -1;
-
     QMouseEvent *pEvent = static_cast<QMouseEvent *> (event);
     _mousePoint = pEvent->pos();
 
@@ -361,12 +400,14 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
                 // 鼠标按下.
             case QEvent::MouseButtonPress:
             {
+                _buttonIndex = i;//记录未标注的按钮 0 1 2
                 _nType = 1;
                 break;
             }
                 // 鼠标释放.
             case QEvent::MouseButtonRelease:
             {
+                _buttonIndex = -1;//复位
                 if (i == 0)
                 {
                     qDebug()<<"go to scan...."<<index.row();
@@ -421,7 +462,7 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
             {
                 _nType = 0;
                 // 设置鼠标样式为手型
-//                QToolTip::showText(pEvent->globalPos(), _list.at(i+1));
+                //                QToolTip::showText(pEvent->globalPos(), _list.at(i+1));
                 emit sigChangeCursor(true);
                 //              qDebug()<<"------------cursor change.......";
                 break;
@@ -429,12 +470,14 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
                 // 鼠标按下.
             case QEvent::MouseButtonPress:
             {
+                _buttonIndex = i+3;//记录已标注的按钮 3 4 5 6
                 _nType = 1;
                 break;
             }
                 // 鼠标释放.
             case QEvent::MouseButtonRelease:
             {
+                _buttonIndex = -1;//复位
                 if (i == 0)
                 {
                     qDebug()<<"go to scan...."<<index.row();
@@ -478,5 +521,5 @@ void CustomListDelegate::setButtonList(const QList<QPushButton *> &value)
 
 void CustomListDelegate::setSelectedRow(int selectedRow)
 {
-   _SelectedRow = selectedRow;
+    _SelectedRow = selectedRow;
 }

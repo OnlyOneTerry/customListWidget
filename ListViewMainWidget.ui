@@ -276,7 +276,7 @@ color: #5E5F5F;</string>
   color:#ffffff;
 }
 
-QPushButton#importFinishedBtn{
+QPushButton#exportFinishedBtn{
   font: 10pt &quot;黑体&quot;;
   min-width:120px;
   max-width:120px;
@@ -451,7 +451,7 @@ QPushButton{
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
-           <widget class="QPushButton" name="importFinishedBtn">
+           <widget class="QPushButton" name="exportFinishedBtn">
             <property name="text">
              <string>导出完成序列</string>
             </property>

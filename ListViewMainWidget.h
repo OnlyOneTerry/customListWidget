@@ -48,7 +48,7 @@ private slots:
 
     void on_unAnnoBtn_clicked();
 
-    void on_importFinishedBtn_clicked();
+    void on_exportFinishedBtn_clicked();
 
     void on_searchBtn_clicked();
 
