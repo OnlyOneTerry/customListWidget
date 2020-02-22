@@ -309,7 +309,7 @@ void ListViewMainWidget::on_exportFinishedBtn_clicked()
             //解析annoResult获取诊断结果和各指标
             allRowsData.append(QVariant(aRowData));
         }
-        QAxObject *range = worksheet->querySubObject("Range(const QString )", "A1:P"+QString("%1").arg(10));//A-P单元格存放所需的字段
+        QAxObject *range = worksheet->querySubObject("Range(const QString )", "A1:P"+QString("%1").arg(dataList.size()+1));//A-P单元格存放所需的字段
         range->dynamicCall("SetValue(const QVariant&)",QVariant(allRowsData));//存储所有数据到 excel 中,批量操作,速度极快
         range->querySubObject("Font")->setProperty("Size", 10);//设置字号
 

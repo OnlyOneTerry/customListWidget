@@ -47,7 +47,6 @@ CustomListDelegate::~CustomListDelegate()
 
 void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    qDebug()<<"index is---"<<index.row();
 #if 0
     Data* data =_model->findAt(index.row());
     if(data)
@@ -410,8 +409,8 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
                 _buttonIndex = -1;//复位
                 if (i == 0)
                 {
-                    qDebug()<<"go to scan...."<<index.row();
-                    emit sigCheck(index.row());
+                    qDebug()<<"go to edit...."<<index.row();
+                    emit sigEditData(index.row());
                 }
                 else if(i == 1)
                 {
