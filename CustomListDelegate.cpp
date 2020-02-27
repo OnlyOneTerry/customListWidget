@@ -159,6 +159,8 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
             if(i==0){
                 button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-2) + _nSpacing * i,
                                     option.rect.top() + nTop,  _nWidth+15, _nHeight);
+//                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth * (i-1) + _nSpacing * 1,
+//                                    option.rect.top() + nTop,  _nWidth+15, _nHeight);
             }else if(i == 1){
                 button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth*(i-1) + _nSpacing*i*2,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
@@ -246,6 +248,7 @@ void CustomListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
             switch (i) {
             case 0:
             {
+                if(data->_annotStatus==ViewData::AnnoStatus::ANNOTAINGING) continue;
                 if(_buttonIndex==3&&_currentPressRow == index.row()){
                     pal.setColor(QPalette::WindowText, QColor(255,255,255));
                 }else{
@@ -368,6 +371,8 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
             if(i==0){
                 button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth *(i-2) + _nSpacing * i,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
+//                button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth *(i-1) + _nSpacing * 1,
+//                                    option.rect.top() + nTop,  _nWidth, _nHeight);
             }else if(i == 1){
                 button.rect = QRect(option.rect.left() + nHalf*2 + _nWidth *(i-1) + _nSpacing *i*2,
                                     option.rect.top() + nTop,  _nWidth, _nHeight);
@@ -461,9 +466,8 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
             {
                 _nType = 0;
                 // 设置鼠标样式为手型
-                //                QToolTip::showText(pEvent->globalPos(), _list.at(i+1));
+                if(data->_annotStatus==ViewData::AnnoStatus::ANNOTAINGING) continue;
                 emit sigChangeCursor(true);
-                //              qDebug()<<"------------cursor change.......";
                 break;
             }
                 // 鼠标按下.
@@ -479,6 +483,7 @@ bool CustomListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
                 _buttonIndex = -1;//复位
                 if (i == 0)
                 {
+                    if(data->_annotStatus==ViewData::AnnoStatus::ANNOTAINGING) continue;
                     qDebug()<<"go to scan...."<<index.row();
                     emit sigCheck(index.row());
                 }

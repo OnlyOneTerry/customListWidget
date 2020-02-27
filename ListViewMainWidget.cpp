@@ -38,6 +38,16 @@ void ListViewMainWidget::initUI()
     });
     connect(_listWidgt,&CustomListWidget::sigToDeleteById,this,[=](QString id){
         _dataManager->delByIdFromViewTable(id);
+        _dataManager->removeTempData(id);
+        for(auto iter = _dirPathAndDirNameMap.begin();iter!=_dirPathAndDirNameMap.end();iter++)
+        {
+              if(iter.value()==id)
+              {
+                  _dirlist.removeOne(iter.key());
+                  _dirPathAndDirNameMap.remove(iter.key());
+                  break;
+              }
+        }
     });
     connect(_listWidgt,&CustomListWidget::sigUpdateNavBtns,this,[=](){
         slotUpdateNavBtns();
@@ -134,7 +144,8 @@ void ListViewMainWidget::getValidDir()
         //获取有效文件夹下，第一个dicom文件的文件名作为序列号
         QString serisId = getDicomName(iter.key());//入参是文件夹名称
         QString tempResultJson = readJsonFile("D:/1.json");//临时测试代码读取json格式的字符串
-        _dataManager->insertToViewTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,tempResultJson);
+//        _dataManager->insertToViewTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,tempResultJson);
+        _dataManager->insertToViewTable("000.0000.0000000.00000000.00000.000.00000000.0000000.0000.000000",iter.key(),count%3,"--/--/--",importTime,tempResultJson);
     }
 #endif
 }
@@ -193,8 +204,11 @@ void ListViewMainWidget::slotUpdateNavBtns()
 void ListViewMainWidget::on_uploadBtn_clicked()
 {
     QString dirpath = QFileDialog::getExistingDirectory(this,"chose dir","./",QFileDialog::ShowDirsOnly);
-    if(!dirpath.isEmpty())
+    if(dirpath.isEmpty())
     {
+        return;
+    }else{
+        qDebug()<<"dirpath is ----------"<<dirpath;
         ProgressDialog& processDialog = ProgressDialog::getGlobalDialog();
         processDialog.show();
         processDialog.setMessage("正在上传序列数据...");
@@ -248,7 +262,7 @@ void ListViewMainWidget::on_unAnnoBtn_clicked()
 void ListViewMainWidget::on_exportFinishedBtn_clicked()
 {
 
-    QString filepath=QFileDialog::getSaveFileName(NULL,QObject::tr("Save orbit"),"/untitled.xlsx",QObject::tr("Microsoft Office 2007 (*.xlsx)"));//获取保存路径
+    QString filepath=QFileDialog::getSaveFileName(NULL,QObject::tr("Save orbit"),"/untitled",QObject::tr("Microsoft Office 2007 (*.xlsx)"));//获取保存路径
     QList<QVariant> allRowsData;//保存所有行数据
     allRowsData.clear();
     if(!filepath.isEmpty()){

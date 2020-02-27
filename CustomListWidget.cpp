@@ -242,16 +242,7 @@ void CustomListWidget::appendData(QList<ViewData> &datalist)
 
     for(int i = 0;i<datalist.size();i++)
     {
-        if(i%2==0)
-        {
             _model->append(QString("%1").arg(datalist.at(i)._serisId),datalist.at(i)._finishTime,datalist.at(i)._importTime,datalist.at(i)._annotStatus,datalist.at(i)._address,datalist.at(i)._annResult);
-
-        }else if(i%3==0){
-            _model->append(QString("%1").arg(datalist.at(i)._serisId),datalist.at(i)._finishTime,datalist.at(i)._importTime,datalist.at(i)._annotStatus,datalist.at(i)._address,datalist.at(i)._annResult);
-        }else {
-
-            _model->append(QString("%1").arg(datalist.at(i)._serisId),datalist.at(i)._finishTime,datalist.at(i)._importTime,datalist.at(i)._annotStatus,datalist.at(i)._address,datalist.at(i)._annResult);
-        }
     }
     int dicomDirsNum = datalist.size();
 
@@ -356,7 +347,9 @@ void CustomListWidget::slotOpenDir(int idex)
     if(!data) return;
     QString serisDirPath = data->_address;
     qDebug()<<"dirpaht is ----"<<serisDirPath;
-    bool ok = QDesktopServices::openUrl(QUrl(serisDirPath));
+    //支持中文路径
+    bool ok = QDesktopServices::openUrl(QUrl::fromLocalFile(serisDirPath));
+//    bool ok = QDesktopServices::openUrl(QUrl(serisDirPath));
 
 }
 

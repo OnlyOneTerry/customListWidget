@@ -18,6 +18,7 @@ public:
      void selectAllFromViewTable();
      void setInsertNumThisTime(int count);
      int getInsertNumThisTime();
+     void removeTempData(QString id);
      //根据序列号模糊查询
      void selectByLikeIdFromViewTable(QString likeId);
      //通过序列id获取标注结果

@@ -11,7 +11,7 @@ DataBaseManager *DataBaseManager::getInstance()
 {
     if(_instance==nullptr)
     {
-        return new DataBaseManager;
+        _instance = new DataBaseManager;
     }
     return _instance;
 }
@@ -221,6 +221,18 @@ void DataBaseManager::setInsertNumThisTime(int count)
 int DataBaseManager::getInsertNumThisTime()
 {
     return _insertNumThisTime;
+}
+
+void DataBaseManager::removeTempData(QString id)
+{
+  for(int i = 0;i<_dataList.size();i++)
+  {
+      if(_dataList.at(i)._serisId==id)
+      {
+          _dataList.removeAt(i);
+          break;
+      }
+  }
 }
 
 QString DataBaseManager::getAnnoResult(QString serisId)

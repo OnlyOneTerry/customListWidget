@@ -61,7 +61,7 @@ QListView QScrollArea {
 
 
 QScrollBar:vertical{
-    background-color:black;
+    background-color:transparent;
 	max-width:8px;
 	min-width:8px;
     padding-top:0px;
