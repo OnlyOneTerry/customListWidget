@@ -144,8 +144,7 @@ void ListViewMainWidget::getValidDir()
         //获取有效文件夹下，第一个dicom文件的文件名作为序列号
         QString serisId = getDicomName(iter.key());//入参是文件夹名称
         QString tempResultJson = readJsonFile("D:/1.json");//临时测试代码读取json格式的字符串
-//        _dataManager->insertToViewTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,tempResultJson);
-        _dataManager->insertToViewTable("000.0000.0000000.00000000.00000.000.00000000.0000000.0000.000000",iter.key(),count%3,"--/--/--",importTime,tempResultJson);
+        _dataManager->insertToViewTable(iter.value(),iter.key(),count%3,"--/--/--",importTime,tempResultJson);
     }
 #endif
 }
