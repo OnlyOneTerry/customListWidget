@@ -52,6 +52,7 @@ private:
     int _amountPage = 0;//总页数
     int _amountNum = 104;//总行数
     QString _currentId="";
+    QList<ViewData> _datalist;
 };
 
 #endif // CUSTOMLISTWIDGET_H

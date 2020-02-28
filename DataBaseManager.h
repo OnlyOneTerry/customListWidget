@@ -29,6 +29,10 @@ public:
      void  updateAnnoFinishedTime(QString serisId,QString finishTime);
      //通过序列号更新标注状态
      void updateAnnoStatus(QString serisId, int newStatus);
+     //查找空行的数量
+     int getEmptyCount();
+     //删除空数据
+     void deleteEmptyRows();
 public:
     DataBaseManager();
 private:

@@ -140,7 +140,7 @@ bool CustomListModel::deleteIndexFile(QString path)
 void CustomListModel::append(const QString &id, const QString &finishTime, const QString &importTime, ViewData::AnnoStatus state, QString address, QString result)
 {
     insert(new ViewData(id,finishTime,importTime,state,address,result));
-    qDebug()<<"insert data finishtime is -------"<<finishTime<<"importTime is --------"<<importTime;
+//    qDebug()<<"insert data finishtime is -------"<<finishTime<<"importTime is --------"<<importTime;
 }
 
 

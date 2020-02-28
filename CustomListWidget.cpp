@@ -58,7 +58,7 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
 
     connect(ui->listView->verticalScrollBar(),&QScrollBar::valueChanged,this,[=](int value){
         if(_isClickBtnToChange) return;
-        qDebug()<<"verticalScrollBar value is ...."<<value;
+        //        qDebug()<<"verticalScrollBar value is ...."<<value;
         //判断是向上滑动还是向下滑动
         if(value-_oldValue>0){//向下滑动
             if(_amountPage<=7){
@@ -172,7 +172,6 @@ CustomListWidget::CustomListWidget(QWidget *parent) :
 
         _oldValue = value;
     });
-//    initUI();
     setListViewFont();
 }
 
@@ -214,6 +213,7 @@ void CustomListWidget::initUI()
     ui->containerLayout->addWidget(_navBtns);
     connect(_navBtns,&NavigateWidget::signalClickeIndex,this,[&](int index){
         _isClickBtnToChange = true;
+#if 0
         ui->listView->verticalScrollBar()->setValue(15*(index-1));
         _isClickBtnToChange = false;
         if(index == _amountPage){
@@ -222,14 +222,57 @@ void CustomListWidget::initUI()
             _oldValue = 15*(index-1);
         }
         _oldIndex = index;
-        //        qDebug()<<"_oldValue is "<<_oldValue;
-        //        qDebug()<<"_oldIndex is "<<_oldIndex;
+#endif
+
+
     });
 }
 
 
 void CustomListWidget::appendData(QList<ViewData> &datalist)
 {
+    _datalist = datalist;
+    _model->clear();
+    for(int i = 0;i<_datalist.size();i++)
+    {
+        if(i<15){
+            _model->append(QString("%1").arg(_datalist.at(i)._serisId),_datalist.at(i)._finishTime,_datalist.at(i)._importTime,_datalist.at(i)._annotStatus,_datalist.at(i)._address,_datalist.at(i)._annResult);
+        }
+    }
+    ui->listView->update();
+    ui->listView->reset();
+    if(_navBtns){
+        delete _navBtns;
+        _navBtns = nullptr;
+    }
+    //获取总数量
+    int dicomDirsNum = _datalist.size();
+
+    if(dicomDirsNum%15==0)//每页包含15行序列信息
+    {
+        _amountPage = dicomDirsNum/15;
+    }
+    else{
+        _amountPage = dicomDirsNum/15+1;
+    }
+
+    _navBtns = new NavigateWidget(_amountPage);
+    ui->containerLayout->addWidget(_navBtns);
+    connect(_navBtns,&NavigateWidget::signalClickeIndex,this,[&](int index){
+        _isClickBtnToChange = true;
+        _model->clear();
+        //去15*index-->15*index+1的数据存入model
+        for(int i = 0;i<_datalist.size();i++)
+        {
+            if((index-1)*15<=i&&i<(index-1)*15+15){
+                _model->append(QString("%1").arg(_datalist.at(i)._serisId),_datalist.at(i)._finishTime,_datalist.at(i)._importTime,_datalist.at(i)._annotStatus,_datalist.at(i)._address,_datalist.at(i)._annResult);
+            }
+        }
+        ui->listView->update();
+        ui->listView->reset();
+    });
+
+#if 0
     _model->clear();
     ui->listView->update();
     ui->listView->reset();
@@ -242,7 +285,7 @@ void CustomListWidget::appendData(QList<ViewData> &datalist)
 
     for(int i = 0;i<datalist.size();i++)
     {
-            _model->append(QString("%1").arg(datalist.at(i)._serisId),datalist.at(i)._finishTime,datalist.at(i)._importTime,datalist.at(i)._annotStatus,datalist.at(i)._address,datalist.at(i)._annResult);
+        _model->append(QString("%1").arg(datalist.at(i)._serisId),datalist.at(i)._finishTime,datalist.at(i)._importTime,datalist.at(i)._annotStatus,datalist.at(i)._address,datalist.at(i)._annResult);
     }
     int dicomDirsNum = datalist.size();
 
@@ -279,6 +322,7 @@ void CustomListWidget::appendData(QList<ViewData> &datalist)
     else{
         _oldIndex = scrossBarValue/15+1;
     }
+#endif
 }
 
 
@@ -349,7 +393,7 @@ void CustomListWidget::slotOpenDir(int idex)
     qDebug()<<"dirpaht is ----"<<serisDirPath;
     //支持中文路径
     bool ok = QDesktopServices::openUrl(QUrl::fromLocalFile(serisDirPath));
-//    bool ok = QDesktopServices::openUrl(QUrl(serisDirPath));
+    //    bool ok = QDesktopServices::openUrl(QUrl(serisDirPath));
 
 }
 
@@ -381,6 +425,14 @@ void CustomListWidget::slotDel(int idex)
     if(_model->getRowCount()%15 == 0)
     {
         emit sigUpdateNavBtns();
+    }
+
+    for(int i = 0;i<_datalist.size();i++)
+    {
+        if(_datalist.at(i)._serisId==serisId)
+        {
+            _datalist.removeAt(i);
+        }
     }
 }
 

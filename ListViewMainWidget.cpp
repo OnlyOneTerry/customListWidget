@@ -41,12 +41,12 @@ void ListViewMainWidget::initUI()
         _dataManager->removeTempData(id);
         for(auto iter = _dirPathAndDirNameMap.begin();iter!=_dirPathAndDirNameMap.end();iter++)
         {
-              if(iter.value()==id)
-              {
-                  _dirlist.removeOne(iter.key());
-                  _dirPathAndDirNameMap.remove(iter.key());
-                  break;
-              }
+            if(iter.value()==id)
+            {
+                _dirlist.removeOne(iter.key());
+                _dirPathAndDirNameMap.remove(iter.key());
+                break;
+            }
         }
     });
     connect(_listWidgt,&CustomListWidget::sigUpdateNavBtns,this,[=](){
@@ -174,6 +174,19 @@ QString ListViewMainWidget::getDicomName(QString dicomDirPath)
     return dicmName;
 }
 
+void ListViewMainWidget::fillEmptyData()
+{
+    //插入空行保证每页15个
+    _dataManager->deleteEmptyRows();
+    int missNum = 15 - _dirPathAndDirNameMap.size()%15;
+    qDebug()<<"miss num is -------"<<missNum;
+    for(int i = 0;i<missNum;i++)
+    {
+        _dataManager->insertToViewTable(QString("%1").arg(i),"",-1,"","","");
+    }
+    _dataManager->getEmptyCount();
+}
+
 void ListViewMainWidget::slotUpdateNavBtns()
 {
     //通过重新加载该类型的数据更新导航按钮
@@ -202,6 +215,8 @@ void ListViewMainWidget::slotUpdateNavBtns()
 
 void ListViewMainWidget::on_uploadBtn_clicked()
 {
+    _dirlist.clear();
+    _recurseTime = 0;//点击上传时复位
     QString dirpath = QFileDialog::getExistingDirectory(this,"chose dir","./",QFileDialog::ShowDirsOnly);
     if(dirpath.isEmpty())
     {

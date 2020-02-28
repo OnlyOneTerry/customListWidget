@@ -1,5 +1,6 @@
 #include "DataBaseManager.h"
 #include <QDebug>
+#include <QSqlRecord>
 DataBaseManager* DataBaseManager::_instance = nullptr;
 
 DataBaseManager::DataBaseManager()
@@ -156,7 +157,7 @@ void DataBaseManager::selectByLikeIdFromViewTable(QString likeId)
             data._finishTime = sql_query.value(3).toString();
             data._importTime = sql_query.value(4).toString();
             data._annResult = sql_query.value(5).toString();
-            qDebug()<<"selectall finishTime is -----"<<data._finishTime<<"importTiem is ---------"<<data._importTime<<"\n";
+//            qDebug()<<"selectall finishTime is -----"<<data._finishTime<<"importTiem is ---------"<<data._importTime<<"\n";
             _dataList.append(data);
 #if 1
             QString id = sql_query.value(0).toString();
@@ -198,7 +199,7 @@ void DataBaseManager::selectAllFromViewTable()
             data._finishTime = sql_query.value(3).toString();
             data._importTime = sql_query.value(4).toString();
             data._annResult = sql_query.value(5).toString();
-            qDebug()<<"selectall finishTime is -----"<<data._finishTime<<"importTiem is ---------"<<data._importTime<<"\n";
+//            qDebug()<<"selectall finishTime is -----"<<data._finishTime<<"importTiem is ---------"<<data._importTime<<"\n";
             _dataList.append(data);
 #if 1
             QString id = sql_query.value(0).toString();
@@ -207,7 +208,7 @@ void DataBaseManager::selectAllFromViewTable()
             QString finishTime = sql_query.value(3).toString();
             QString importTime = sql_query.value(4).toString();
             QString annoResult = sql_query.value(5).toString();
-            qDebug()<<QString("id:%1    address:%2    statusType:%3 finishTime:%4 importTime:%5 annoResult:%6").arg(id).arg(address).arg(statusType).arg(finishTime).arg(importTime).arg(annoResult);
+//            qDebug()<<QString("id:%1    address:%2    statusType:%3 finishTime:%4 importTime:%5 annoResult:%6").arg(id).arg(address).arg(statusType).arg(finishTime).arg(importTime).arg(annoResult);
 #endif
         }
     }
@@ -336,6 +337,69 @@ void DataBaseManager::updateAnnoStatus(QString serisId, int newStatus)
     else
     {
         qDebug() << "updated status!";
+    }
+}
+
+int DataBaseManager::getEmptyCount()
+{
+    if(!database.open())
+    {
+        qDebug()<<"Error:Failed to connect database."<<database.lastError();
+    }
+    else{
+        qDebug()<<"successed to connect database.";
+    }
+
+    int emptyCount = 1;
+    //获取空数据
+    QString alterStatus_sql = "select * from  annotationTab  where annoStatus =:status";
+    sql_query.prepare(alterStatus_sql);
+    sql_query.bindValue(":status",-1);
+    if(!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        while(sql_query.next()){
+            emptyCount++;
+        }
+        qDebug() << "insert emptyCount is "<<emptyCount;
+    }
+    return emptyCount;
+}
+
+void DataBaseManager::deleteEmptyRows()
+{
+    //查询数据
+    if(!database.open())
+    {
+        qDebug()<<"Error:Failed to connect database to delete."<<database.lastError();
+    }
+    else{
+        qDebug()<<"successed to connect database to delete.";
+    }
+#if 0
+    QString delete_sql = "delete from annotationTab where annoStatus =:status";
+    sql_query.prepare(delete_sql);
+    sql_query.bindValue(":status",-1);
+    if(!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        qDebug()<<"deleted!";
+    }
+#endif
+
+    if(!sql_query.exec("delete from annotationTab where annoStatus = -1"))
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        qDebug()<<"deleted!";
     }
 }
 
